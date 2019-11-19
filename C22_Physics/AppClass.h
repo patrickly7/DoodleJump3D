@@ -9,15 +9,16 @@ Date: 2017/06
 
 #include "ControllerConfiguration.h"
 #include "imgui\ImGuiObject.h"
-
 #include "MyEntityManager.h"
 
 namespace Simplex
 {
-//Adding Application to the Simplex namespace
+	//Adding Application to the Simplex namespace
 class Application
 {
 	MyEntityManager* m_pEntityMngr = nullptr; //Entity Manager
+	vector3 m_v3Creeper; //position of the creeper
+	quaternion m_qCreeper; //orientation for the creeper
 private:
 	String m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu"; //programmer
 
@@ -48,7 +49,6 @@ private:
 	LightManager* m_pLightMngr = nullptr; //Light Manager of the system
 	MeshManager* m_pMeshMngr = nullptr; //Mesh Manager
 	CameraManager* m_pCameraMngr = nullptr; //Singleton for the camera manager
-	
 	ControllerInput* m_pController[8]; //Controller
 	uint m_uActCont = 0; //Active Controller of the Application
 
@@ -58,6 +58,7 @@ private:
 
 public:
 #pragma region Constructor / Run / Destructor
+    GameState RunFrame();
 	/*
 	USAGE: Constructor
 	ARGUMENTS: ---
@@ -329,9 +330,3 @@ private:
 }//namespace Simplex
 
 #endif //__APPLICATIONCLASS_H_
-
- /*
- USAGE:
- ARGUMENTS: ---
- OUTPUT: ---
- */
