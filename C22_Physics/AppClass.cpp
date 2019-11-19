@@ -12,20 +12,27 @@ void Application::InitVariables(void)
 
     currentPlayer = new Player("Player00");
 	m_pEntityMngr->AddEntity("Minecraft\\Steve.obj", "Steve");
+
+	m_pEntityMngr->UsePhysicsSolver();
+
+	//scale and place these
+	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_0");
+	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_1");
+
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(-2.0f, -0.05f, 3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_0");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(4.0f, 3.0f, -3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_1");
+
+	// create and place pit of spikes (pawns)
+	for (int i = 0; i < 10; i++) 
+	{
+		for (int j = 0; j < 10; j++) 
+		{
+			m_pEntityMngr->AddEntity("Sorted\\Pawn.obj", "Spike_" + std::to_string(i) + std::to_string(j));
+			m_pEntityMngr->SetModelMatrix(glm::translate(vector3((i * 1.25f) - 5.5f, -5.0f, (j * 1.25f) - 5.5f)) * glm::scale(vector3(0.5f)), "Spike_" + std::to_string(i) + std::to_string(j));
+		} 
+	}
     m_pEntityMngr->AddEntity((MyEntity*)currentPlayer);
     currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00");
-	//for (int i = 0; i < 100; i++)
-	//{
-	//	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Cube_" + std::to_string(i));
-	//	vector3 v3Position = vector3(glm::sphericalRand(12.0f));
-	//	v3Position.y = 0.0f;
-	//	matrix4 m4Position = glm::translate(v3Position);
-	//	m_pEntityMngr->SetModelMatrix(m4Position * glm::scale(vector3(2.0f)));
-	//	m_pEntityMngr->UsePhysicsSolver();
-	//	//m_pEntityMngr->SetMass(2);
-
-	//	//m_pEntityMngr->SetMass(i+1);
-	//}
 }
 void Application::Update(void)
 {
