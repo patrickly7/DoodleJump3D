@@ -10,16 +10,17 @@ ApplicationManager::~ApplicationManager() {}
 void ApplicationManager::Run(const std::string& name, int size,
     bool fullscreen, bool borderless) {
     using namespace Simplex;
-    Application* app = new Application();
-    app->Init(name, size, fullscreen, borderless);
+    //Application* app = new Application();
+    MainMenu* main = new MainMenu(1260, 780);
+    //app->Init(name, size, fullscreen, borderless);
     while (state != GameState::CLOSE) {
         switch (state)
         {
         case GameState::MAIN_MENU:
-            state = GameState::GAME;
+            main->Update();
             break;
         case GameState::GAME:
-            state = app->RunFrame();
+            //state = app->RunFrame();
             break;
         case GameState::PAUSE_MENU:
             break;
@@ -29,5 +30,5 @@ void ApplicationManager::Run(const std::string& name, int size,
             break;
         }
     }
-    SafeDelete(app);
+    //SafeDelete(app);
 }

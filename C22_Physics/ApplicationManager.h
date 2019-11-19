@@ -3,6 +3,7 @@
 
 #include "Definitions.h"
 #include "AppClass.h"
+#include "MainMenu.h"
 
 class ApplicationManager
 {

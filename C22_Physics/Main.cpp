@@ -1,6 +1,5 @@
 // Include standard headers
 #include "Main.h"
-
 int main(void)
 {
 	ApplicationManager* app = new ApplicationManager();
