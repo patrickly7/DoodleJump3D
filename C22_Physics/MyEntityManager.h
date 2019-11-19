@@ -20,6 +20,8 @@ class MyEntityManager
 public:
     void AddEntity(MyEntity* ent);
 
+    void MakeJump(int index);
+
 	/*
 	Usage: Gets the singleton pointer
 	Arguments: ---

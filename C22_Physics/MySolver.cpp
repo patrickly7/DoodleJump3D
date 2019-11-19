@@ -118,6 +118,7 @@ void MySolver::Update(void)
 	{
 		m_v3Position.y = 0;
 		m_v3Velocity.y = 0;
+        onAir = false;
 	}
 
 	m_v3Acceleration = ZERO_V3;

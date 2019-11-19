@@ -169,6 +169,7 @@ MyEntity* Simplex::MyEntity::GetEntity(String a_sUniqueID)
 	//if not found return nullptr, if found return it
 	return entity == m_IDMap.end() ? nullptr : entity->second;
 }
+void Simplex::MyEntity::Jump() {}
 void Simplex::MyEntity::GenUniqueID(String& a_sUniqueID)
 {
 	static uint index = 0;
@@ -304,14 +305,7 @@ void Simplex::MyEntity::ApplyForce(vector3 a_v3Force)
 {
 	m_pSolver->ApplyForce(a_v3Force);
 }
-void Simplex::MyEntity::Update(void)
-{
-	/*if (m_bUsePhysicsSolver)
-	{
-		m_pSolver->Update();
-		SetModelMatrix(glm::translate(m_pSolver->GetPosition()) * glm::scale(m_pSolver->GetSize()));
-	}*/
-}
+void Simplex::MyEntity::Update(void){}
 void Simplex::MyEntity::ResolveCollision(MyEntity* a_pOther)
 {
 	if (m_bUsePhysicsSolver)

@@ -13,7 +13,7 @@ void Application::InitVariables(void)
     currentPlayer = new Player("Player00");
 	m_pEntityMngr->AddEntity("Minecraft\\Steve.obj", "Steve");
     m_pEntityMngr->AddEntity((MyEntity*)currentPlayer);
-	currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00")
+    currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00");
 	//for (int i = 0; i < 100; i++)
 	//{
 	//	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Cube_" + std::to_string(i));

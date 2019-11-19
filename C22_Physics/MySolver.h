@@ -18,6 +18,7 @@ class MySolver
 	vector3 m_v3Velocity = ZERO_V3; //Velocity of the MySolver
 	float m_fMass = 1.0f; //Mass of the solver
 public:
+    bool onAir = false;
 	/*
 	USAGE: Constructor
 	ARGUMENTS: ---

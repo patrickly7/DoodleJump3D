@@ -165,6 +165,7 @@ Simplex::MyEntityManager::MyEntityManager(MyEntityManager const& a_pOther){ }
 Simplex::MyEntityManager& Simplex::MyEntityManager::operator=(MyEntityManager const& a_pOther) { return *this; }
 Simplex::MyEntityManager::~MyEntityManager(){Release();};
 // other methods
+void Simplex::MyEntityManager::MakeJump(int index) { m_mEntityArray[index]->Jump(); }
 void Simplex::MyEntityManager::Update(void)
 {
 	//Clear all collisions

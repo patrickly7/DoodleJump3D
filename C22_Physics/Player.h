@@ -3,17 +3,16 @@
 #include "MyEntity.h"
 #include "Definitions.h"
 using namespace Simplex;
+
 class Player : MyEntity
 {
 public:
     Player(String ID);
-
     void Move();
-    void Jump();
 private:
-
+    vector3 jumpForce;
     void Update();
-
+    void Jump();
     vector3 gravityForce;
     vector3 inputForce;
     vector3 otherForce;
