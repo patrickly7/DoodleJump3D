@@ -73,7 +73,7 @@ void Application::ProcessKeyPressed(sf::Event a_event)
 	default: break;
 	case sf::Keyboard::Space:
 		m_sound.play();
-		m_pEntityMngr->ApplyForce(vector3(0.0f, 1.5f, 0.0f), "Steve"); // HOW HIGH DOES A JUMP GO, MAYBE RESTRICT TO NO DOUBLE JUMP
+        m_pEntityMngr->MakeJump(currentPlayerIndex);
 		break;
 	case sf::Keyboard::LShift:
 	case sf::Keyboard::RShift:
@@ -416,22 +416,22 @@ void Application::ProcessKeyboard(void)
 	float fDelta = m_pSystem->GetDeltaTime(0);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		m_pEntityMngr->ApplyForce(vector3(-2.0f * fDelta, 0.0f, 0.0f), "Steve");
+		m_pEntityMngr->ApplyForce(vector3(-2.0f * fDelta, 0.0f, 0.0f), currentPlayerIndex);
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		m_pEntityMngr->ApplyForce(vector3(2.0f * fDelta, 0.0f, 0.0f), "Steve");
+		m_pEntityMngr->ApplyForce(vector3(2.0f * fDelta, 0.0f, 0.0f), currentPlayerIndex);
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		m_pEntityMngr->ApplyForce(vector3(0.0f, 0.0f, -2.0f * fDelta), "Steve");
+		m_pEntityMngr->ApplyForce(vector3(0.0f, 0.0f, -2.0f * fDelta), currentPlayerIndex);
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		m_pEntityMngr->ApplyForce(vector3(0.0f, 0.0f, 2.0f * fDelta), "Steve");
+		m_pEntityMngr->ApplyForce(vector3(0.0f, 0.0f, 2.0f * fDelta), currentPlayerIndex);
 	}
 #pragma endregion
 }
