@@ -10,7 +10,7 @@ Date: 2017/06
 #include "ControllerConfiguration.h"
 #include "imgui\ImGuiObject.h"
 
-#include "MyEntityManager.h
+#include "MyEntityManager.h"
 #include "MyMesh.h"
 #include "Player.h"
 
