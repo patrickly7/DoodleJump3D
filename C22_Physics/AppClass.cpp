@@ -12,6 +12,17 @@ void Application::InitVariables(void)
 
 	m_pEntityMngr->AddEntity("Minecraft\\Steve.obj", "Steve");
 	m_pEntityMngr->UsePhysicsSolver();
+
+	//scale and place these
+	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_0");
+	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_1");
+	//m_pEntityMngr->AddEntity("Planets\\00_Sun.obj", "Sun");
+
+
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(-2.0f, -3.0f, 3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_0");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(4.0f, 3.0f, -3.0f))* glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_1");
+
+
 	
 	//for (int i = 0; i < 100; i++)
 	//{
