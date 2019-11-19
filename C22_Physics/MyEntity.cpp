@@ -306,11 +306,11 @@ void Simplex::MyEntity::ApplyForce(vector3 a_v3Force)
 }
 void Simplex::MyEntity::Update(void)
 {
-	if (m_bUsePhysicsSolver)
+	/*if (m_bUsePhysicsSolver)
 	{
 		m_pSolver->Update();
 		SetModelMatrix(glm::translate(m_pSolver->GetPosition()) * glm::scale(m_pSolver->GetSize()));
-	}
+	}*/
 }
 void Simplex::MyEntity::ResolveCollision(MyEntity* a_pOther)
 {

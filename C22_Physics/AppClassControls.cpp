@@ -73,7 +73,7 @@ void Application::ProcessKeyPressed(sf::Event a_event)
 	default: break;
 	case sf::Keyboard::Space:
 		m_sound.play();
-		m_pEntityMngr->ApplyForce(vector3(0.0f, 1.5f, 0.0f), "Steve"); // HOW HIGH DOES A JUMP GO, MAYBE RESTRICT TO NO DOUBLE JUMP
+		m_pEntityMngr->ApplyForce(vector3(0.0f, 1.5f, 0.0f), currentPlayerIndex); // HOW HIGH DOES A JUMP GO, MAYBE RESTRICT TO NO DOUBLE JUMP
 		break;
 	case sf::Keyboard::LShift:
 	case sf::Keyboard::RShift:

@@ -18,6 +18,8 @@ class MyEntityManager
 	PEntity* m_mEntityArray = nullptr; //array of MyEntity pointers
 	static MyEntityManager* m_pInstance; // Singleton pointer
 public:
+    void AddEntity(MyEntity* ent);
+
 	/*
 	Usage: Gets the singleton pointer
 	Arguments: ---
