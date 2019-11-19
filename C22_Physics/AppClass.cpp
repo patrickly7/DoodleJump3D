@@ -16,14 +16,20 @@ void Application::InitVariables(void)
 	//scale and place these
 	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_0");
 	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_1");
-	//m_pEntityMngr->AddEntity("Planets\\00_Sun.obj", "Sun");
 
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(-2.0f, -0.05f, 3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_0");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(4.0f, 3.0f, -3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_1");
 
-	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(-2.0f, -3.0f, 3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_0");
-	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(4.0f, 3.0f, -3.0f))* glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_1");
+	// create and place pit of spikes (pawns)
+	for (int i = 0; i < 10; i++) 
+	{
+		for (int j = 0; j < 10; j++) 
+		{
+			m_pEntityMngr->AddEntity("Sorted\\Pawn.obj", "Spike_" + std::to_string(i) + std::to_string(j));
+			m_pEntityMngr->SetModelMatrix(glm::translate(vector3((i * 1.25f) - 5.5f, -5.0f, (j * 1.25f) - 5.5f)) * glm::scale(vector3(0.5f)), "Spike_" + std::to_string(i) + std::to_string(j));
+		} 
+	}
 
-
-	
 	//for (int i = 0; i < 100; i++)
 	//{
 	//	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Cube_" + std::to_string(i));
