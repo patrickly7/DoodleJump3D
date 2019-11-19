@@ -1,7 +1,7 @@
 #include "MySolver.h"
 using namespace Simplex;
 
-//  MySolver
+// MySolver
 void MySolver::Init(void)
 {
 	m_v3Acceleration = ZERO_V3;
@@ -18,9 +18,11 @@ void MySolver::Swap(MySolver& other)
 	std::swap(m_fMass, other.m_fMass);
 }
 
-void MySolver::Release(void){/*nothing to deallocate*/ }
-//The big 3
+void MySolver::Release(void){ /*nothing to deallocate*/ }
+
+// The Big 3
 MySolver::MySolver(void){ Init(); }
+
 MySolver::MySolver(MySolver const& other)
 {
 	m_v3Acceleration = other.m_v3Acceleration;
@@ -28,6 +30,7 @@ MySolver::MySolver(MySolver const& other)
 	m_v3Position = other.m_v3Position;
 	m_fMass = other.m_fMass;
 }
+
 MySolver& MySolver::operator=(MySolver const& other)
 {
 	if (this != &other)
@@ -39,9 +42,10 @@ MySolver& MySolver::operator=(MySolver const& other)
 	}
 	return *this;
 }
+
 MySolver::~MySolver() { Release(); }
 
-//Accessors
+// Accessors
 void MySolver::SetPosition(vector3 a_v3Position) { m_v3Position = a_v3Position; }
 vector3 MySolver::GetPosition(void) { return m_v3Position; }
 
@@ -54,28 +58,10 @@ vector3 MySolver::GetVelocity(void) { return m_v3Velocity; }
 void MySolver::SetMass(float a_fMass) { m_fMass = a_fMass; }
 float MySolver::GetMass(void) { return m_fMass; }
 
-//Methods
-void MySolver::ApplyFriction(float a_fFriction)
-{
-	if (a_fFriction < 0.01f)
-		a_fFriction = 0.01f;
-	
-	m_v3Velocity *= 1.0f - a_fFriction;
+void MySolver::SetOnAir(bool a_isOnAir) { m_onAir = a_isOnAir; }
+bool MySolver::GetOnAir(void) { return m_onAir; }
 
-	//if velocity is really small make it zero
-	if (glm::length(m_v3Velocity) < 0.01f)
-		m_v3Velocity = ZERO_V3;
-}
-
-void MySolver::ApplyForce(vector3 a_v3Force)
-{
-	//check minimum mass
-	if (m_fMass < 0.01f)
-		m_fMass = 0.01f;
-	//f = m * a -> a = f / m
-	m_v3Acceleration += a_v3Force / m_fMass;
-}
-
+// Methods
 vector3 CalculateMaxVelocity(vector3 a_v3Velocity, float maxVelocity)
 {
 	if (glm::length(a_v3Velocity) > maxVelocity)
@@ -95,32 +81,44 @@ vector3 RoundSmallVelocity(vector3 a_v3Velocity, float minVelocity = 0.01f)
 	return a_v3Velocity;
 }
 
+void MySolver::ApplyFriction(float a_fFriction)
+{
+	if (a_fFriction < 0.01f)
+		a_fFriction = 0.01f;
+	
+	m_v3Velocity *= 1.0f - a_fFriction;
+	m_v3Velocity = RoundSmallVelocity(m_v3Velocity, m_minVelocity);
+}
+
+void MySolver::ApplyForce(vector3 a_v3Force)
+{
+	if (m_fMass < 0.01f)
+		m_fMass = 0.01f;
+	
+	m_v3Acceleration += a_v3Force / m_fMass;
+}
+
 void MySolver::Update(void)
 {
-	/*
-	THINGS TO CHANGE
-	- Gravity Levels 
-	- Limit Jumps So Space Can't Be Applied More than Once
-	- Model Currently Freezes after a jump(s) if no directional keys are pressed
-	(Assuming it's not calling the Update function)
-	*/
-	ApplyForce(vector3(0.0f, -0.020f, 0.0f)); // THIS CONTROLS THE FORCE OF GRAVITY
+	// Apply Force of Gravity
+	ApplyForce(m_v3Gravity);
 	m_v3Velocity += m_v3Acceleration;
-	
-	float fMaxVelocity = 5.0f;
-	m_v3Velocity = CalculateMaxVelocity(m_v3Velocity, fMaxVelocity);
+	m_v3Velocity = CalculateMaxVelocity(m_v3Velocity, m_maxVelocity);
 
-	ApplyFriction(0.1f);
-	m_v3Velocity = RoundSmallVelocity(m_v3Velocity, 0.005f);
-	m_v3Position += m_v3Velocity;
-			
-	if (m_v3Position.y <= 0) // CHANGE THIS FOR WHEN WE WANT TO CHANGE DROP ZONE LOCATION (SPIKES?)
+	// Apply Friction to Reduce Velocity
+	ApplyFriction(m_friction);
+	m_v3Velocity = RoundSmallVelocity(m_v3Velocity, m_minVelocity);
+
+	m_v3Position += m_v3Velocity;		
+	// TODO - Remove Once Collision Resolution is Implemented
+	if (m_v3Position.y <= 0)
 	{
 		m_v3Position.y = 0;
 		m_v3Velocity.y = 0;
-        onAir = false;
+        m_onAir = false;
 	}
 
+	// Reset Acceleration
 	m_v3Acceleration = ZERO_V3;
 }
 
