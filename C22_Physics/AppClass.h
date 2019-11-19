@@ -10,8 +10,9 @@ Date: 2017/06
 #include "ControllerConfiguration.h"
 #include "imgui\ImGuiObject.h"
 
-#include "MyEntityManager.h"
+#include "MyEntityManager.h
 #include "MyMesh.h"
+#include "Player.h"
 
 namespace Simplex
 {
@@ -19,6 +20,8 @@ namespace Simplex
 class Application
 {
 	MyEntityManager* m_pEntityMngr = nullptr; //Entity Manager
+    Player* currentPlayer;
+    int currentPlayerIndex;
 private:
 	String m_sProgrammer = "Team Scribble Hop"; //programmer
 
