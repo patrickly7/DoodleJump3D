@@ -1,23 +1,19 @@
 #ifndef _MAIN_MENU_H
 #define _MAIN_MENU_H
 
-#include "SFML/Graphics.hpp"
-#include "SFML/Window.hpp"
+#include "Menus.h"
 
-#include <memory>
-
-class MainMenu {
+class MainMenu : public Menus{
 public:
-    void Update();
-    void MakeMenu();
-    MainMenu(int width, int height);
-    ~MainMenu();
+    MainMenu(GameState& s, int width, int height);
 private:
     sf::Sprite playButton;
     sf::Sprite exitButton;
     sf::Texture playImage;
     sf::Texture exitImage;
-    std::unique_ptr<sf::RenderWindow> window;
+    void DrawButtons();
+    void HighlightBoxes(const sf::Vector2i& mousePos);
+    void MouseClicked(const sf::Vector2i& mousePos);
 };
 
 #endif // !_MAIN_MENU_H
