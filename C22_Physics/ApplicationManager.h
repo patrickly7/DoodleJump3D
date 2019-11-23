@@ -5,12 +5,11 @@
 #include "AppClass.h"
 #include "MainMenu.h"
 #include "PauseMenu.h"
+#include "EndGameMenu.h"
 
 class ApplicationManager
 {
 public:
-    
-
     ~ApplicationManager();
     ApplicationManager();
     void Run(const std::string& name, int size,

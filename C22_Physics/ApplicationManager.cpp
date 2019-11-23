@@ -10,11 +10,11 @@ ApplicationManager::~ApplicationManager() {}
 void ApplicationManager::Run(const std::string& name, int size,
     bool fullscreen, bool borderless) {
     using namespace Simplex;
-    std::unique_ptr<MainMenu> mainMenu = std::make_unique<MainMenu>(state, 1260, 780);
+    auto mainMenu = std::make_unique<MainMenu>(state, 1260, 780);
     auto menuWindow = mainMenu->GetWindow();
-    std::unique_ptr<PauseMenu> pauseMenu = std::make_unique<PauseMenu>(state, 1260, 780, menuWindow);
-    //std::unique_ptr<EndMenu> endMenu = std::make_unique<EndMenu>();
-    std::unique_ptr<Application> app = std::make_unique<Application>(state);
+    auto pauseMenu = std::make_unique<PauseMenu>(state, 1260, 780, menuWindow);
+    auto endMenu = std::make_unique<EndGameMenu>(state, 1260, 780, menuWindow);
+    auto app = std::make_unique<Application>(state);
     app->Init(name, size, fullscreen, borderless);
     auto gameWindow = app->GetWindow();
     gameWindow->setVisible(false);
@@ -32,6 +32,7 @@ void ApplicationManager::Run(const std::string& name, int size,
             pauseMenu->Update();
             break;
         case GameState::END_MENU:
+            endMenu->Update();
             break;
         default:
             break;
