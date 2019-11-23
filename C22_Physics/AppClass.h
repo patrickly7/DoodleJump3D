@@ -12,6 +12,7 @@ Date: 2017/06
 #include "MyEntityManager.h"
 #include "MyMesh.h"
 #include "Player.h"
+#include "CameraController.h"
 
 namespace Simplex
 {
@@ -25,6 +26,8 @@ class Application
   int currentPlayerIndex;
 
 private:
+    CameraController* cameraController;
+
 	String m_sProgrammer = "Team Scribble Hop"; //programmer
 
 	static ImGuiObject gui; //GUI object

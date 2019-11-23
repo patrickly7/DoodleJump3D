@@ -29,6 +29,8 @@ Application::Application(Application const& input) : state(input.state) {}
 Application& Application::operator=(Application const& input) { return *this; }
 Application::~Application(void) 
 {
+    delete cameraController;
+
 	Release();
 	
 	//release controllers
@@ -259,6 +261,7 @@ void Application::Init(String a_sApplicationName, uint a_uWidth, uint a_uHeight,
 
 	//Initializated flag
 	bInitializated = true;
+
 }
 void Application::InitWindow(String a_sWindowName)
 {
