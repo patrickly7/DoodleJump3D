@@ -39,8 +39,15 @@ void ApplicationManager::Run(const std::string& name, int size,
         }
         if (previous != state) {
             if (state == GameState::GAME) {
+                if(previous == GameState::PAUSE_MENU)
+                    gameWindow->setVisible(true);
+                else { //starting new game
+                    /*app.reset(new Application(state));
+                    app->Init(name, size, fullscreen, borderless);
+                    gameWindow = app->GetWindow();*/
+                    gameWindow->setVisible(true);
+                }
                 menuWindow->close();
-                gameWindow->setVisible(true);
             }
             if (previous == GameState::GAME) {
                 menuWindow->create(sf::VideoMode(gameWindow->getSize().x, gameWindow->getSize().y), "DoodleJump3D");
