@@ -4,7 +4,7 @@ using namespace Simplex;
 void MyRigidBody::Init(void)
 {
 	m_pMeshMngr = MeshManager::GetInstance();
-	m_bVisibleBS = false;
+	m_bVisibleBS = true;
 	m_bVisibleOBB = true;
 	m_bVisibleARBB = false;
 
