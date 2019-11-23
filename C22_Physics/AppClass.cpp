@@ -33,9 +33,12 @@ void Application::InitVariables(void)
 	}
     m_pEntityMngr->AddEntity((MyEntity*)currentPlayer);
     currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00");
+    cameraController = new CameraController(*currentPlayer, vector3(0.0f, 3.0f, 0.0f), 4.0f, 50.0f);
+
 }
 void Application::Update(void)
 {
+    cameraController->Update();
 	//Update the system so it knows how much time has passed since the last call
 	m_pSystem->Update();
 
