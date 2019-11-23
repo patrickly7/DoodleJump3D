@@ -24,8 +24,8 @@ sf::Image LoadImageFromResource(const std::string& name)
 
 	return image;
 }
-Application::Application() {}
-Application::Application(Application const& input) {}
+Application::Application(GameState& s) : state(s) {}
+Application::Application(Application const& input) : state(input.state) {}
 Application& Application::operator=(Application const& input) { return *this; }
 Application::~Application(void) 
 {
@@ -262,6 +262,8 @@ void Application::Init(String a_sApplicationName, uint a_uWidth, uint a_uHeight,
 }
 void Application::InitWindow(String a_sWindowName)
 {
+    if (m_pWindow == nullptr) m_pWindow = new sf::Window();
+
 	uint uStyle = sf::Style::Default;
 
 	if (m_pSystem->IsWindowBorderless())
@@ -271,7 +273,7 @@ void Application::InitWindow(String a_sWindowName)
 		uStyle = sf::Style::Fullscreen;
 		
 	//If OpenGL 4.5 is not supported in the system glfw will warn you and determine the highest possible version
-	m_pWindow = new sf::Window(	sf::VideoMode(m_pSystem->GetWindowWidth(), m_pSystem->GetWindowHeight(), 32), //Window size
+	m_pWindow->create(	sf::VideoMode(m_pSystem->GetWindowWidth(), m_pSystem->GetWindowHeight(), 32), //Window size
 								a_sWindowName, //window name
 								uStyle, //window style
 								sf::ContextSettings(	24, //depth buffer
@@ -465,10 +467,8 @@ void Application::WriteConfig(void)
 
 	fclose(pFile);
 }
-
-GameState Application::RunFrame() {
+void Application::RunFrame() {
     // handle events
-    GameState s = GameState::GAME;
     sf::Event appEvent;
     sf::Vector2i pos;
     sf::Vector2u size;
@@ -479,7 +479,7 @@ GameState Application::RunFrame() {
         case sf::Event::Closed:
             // end the program
             m_bRunning = false;
-            s = GameState::CLOSE;
+            state = GameState::CLOSE;
             break;
         case sf::Event::Resized:
             size = m_pWindow->getSize();
@@ -506,10 +506,10 @@ GameState Application::RunFrame() {
             ProcessMouseScroll(appEvent);
             break;
         case sf::Event::KeyPressed:
-            if (appEvent.KeyPressed == sf::Keyboard::Key::F1)
-                s = GameState::PAUSE_MENU;
-            else if (appEvent.KeyPressed == sf::Keyboard::Key::F2)
-                s = GameState::END_MENU;
+            if (appEvent.key.code == sf::Keyboard::Key::P)
+                state = GameState::PAUSE_MENU;
+            else if (appEvent.key.code == sf::Keyboard::Key::M)
+                state = GameState::END_MENU;
             else
                 ProcessKeyPressed(appEvent);
             break;
@@ -547,5 +547,4 @@ GameState Application::RunFrame() {
     ProcessJoystick();//Continuous events
     Update();
     Display();
-    return s;
 }

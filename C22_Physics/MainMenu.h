@@ -6,6 +6,7 @@
 class MainMenu : public Menus{
 public:
     MainMenu(GameState& s, int width, int height);
+    std::shared_ptr<sf::RenderWindow> GetWindow() { return window; }
 private:
     sf::Sprite playButton;
     sf::Sprite exitButton;

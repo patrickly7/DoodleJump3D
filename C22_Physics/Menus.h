@@ -13,7 +13,7 @@ class Menus {
 protected:
     GameState& state;
     std::vector<sf::Sprite> sprites;
-    std::unique_ptr<sf::RenderWindow> window;
+    std::shared_ptr<sf::RenderWindow> window;
     void HighlightBoxes(const sf::Vector2i& mousePos);
     void DrawButtons();
     virtual void MouseClicked(const sf::Vector2i& mousePos) {};

@@ -1,7 +1,7 @@
 #include "PauseMenu.h"
 
-PauseMenu::PauseMenu(GameState& s, int width, int height) : Menus(s) {
-    window = std::make_unique<sf::RenderWindow>(sf::VideoMode(width, height), "DoodleJump3D");
+PauseMenu::PauseMenu(GameState& s, int width, int height, std::shared_ptr<sf::RenderWindow>& rend) : Menus(s) {
+    window = rend;
 
     if (!(continueImage.loadFromFile("../Assets/ContinueButton.png") &&
         backToMainImage.loadFromFile("../Assets/MainMenuButton.png")))

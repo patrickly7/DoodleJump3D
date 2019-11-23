@@ -57,14 +57,18 @@ private:
 	sf::Music m_soundBGM; //background music
 
 public:
+    GameState& state;
+    sf::Window* GetWindow() { return m_pWindow; }
+
+
 #pragma region Constructor / Run / Destructor
-    GameState RunFrame();
+    void RunFrame();
 	/*
 	USAGE: Constructor
 	ARGUMENTS: ---
 	OUTPUT: ---
 	*/
-	Application();
+	Application(GameState& s);
 	/*
 	USAGE: Initializes the window and rendering context
 	ARGUMENTS:
@@ -98,17 +102,19 @@ public:
 	ARGUMENTS: ---
 	OUTPUT: ---
 	*/
+
 	~Application(void);
+    /*
+    USAGE: Initialize the window
+    ARGUMENTS: String a_sWindowName = "GLFW" -> Window name
+    OUTPUT: ---
+    */
+    void InitWindow(String a_sWindowName = "Application");
 #pragma endregion
+
 
 private:
 #pragma region Initialization / Release
-	/*
-	USAGE: Initialize the window
-	ARGUMENTS: String a_sWindowName = "GLFW" -> Window name
-	OUTPUT: ---
-	*/
-	void InitWindow(String a_sWindowName = "Application");
 	/*
 	USAGE: Initializes user specific variables, this is executed right after InitWindow,
 	the purpose of this member function is to initialize member variables specific for this project.

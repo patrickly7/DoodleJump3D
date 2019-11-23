@@ -6,7 +6,7 @@
 class PauseMenu : public Menus
 {
 public:
-    PauseMenu(GameState& s, int width, int height);
+    PauseMenu(GameState& s, int width, int height, std::shared_ptr<sf::RenderWindow>& wind);
 private:
     sf::Sprite continueButton;
     sf::Sprite backToMainButton;

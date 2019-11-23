@@ -1,7 +1,7 @@
 #include "MainMenu.h"
 
 MainMenu::MainMenu(GameState& s, int width, int height) : Menus(s) {
-    window = std::make_unique<sf::RenderWindow>(sf::VideoMode(width, height), "DoodleJump3D");
+    window = std::make_shared<sf::RenderWindow>(sf::VideoMode(width, height), "DoodleJump3D");
     
     if (!(playImage.loadFromFile("../Assets/PlayButton.png") &&
           exitImage.loadFromFile("../Assets/ExitButton.png"))) 
