@@ -4,6 +4,7 @@
 #include "Definitions.h"
 #include "AppClass.h"
 #include "MainMenu.h"
+#include "PauseMenu.h"
 
 class ApplicationManager
 {

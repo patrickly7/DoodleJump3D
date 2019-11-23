@@ -11,8 +11,6 @@ private:
     sf::Sprite exitButton;
     sf::Texture playImage;
     sf::Texture exitImage;
-    void DrawButtons();
-    void HighlightBoxes(const sf::Vector2i& mousePos);
     void MouseClicked(const sf::Vector2i& mousePos);
 };
 

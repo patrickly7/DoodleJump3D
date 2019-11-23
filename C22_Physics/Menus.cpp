@@ -22,3 +22,16 @@ bool Menus::insideSprite(const sf::Vector2i& mousePos, const sf::Sprite& sp) {
     bool b = mousePos.y >= spPos.y && mousePos.y <= spPos.y + area.height;
     return a && b;
 }
+
+void Menus::HighlightBoxes(const sf::Vector2i& mousePos) {
+    for (auto& sp : sprites) {
+        if (insideSprite(mousePos, sp))
+            sp.setColor(sf::Color::Blue);
+        else
+            sp.setColor(sf::Color::White);
+    }
+}
+
+void Menus::DrawButtons() {
+    for (auto& sp : sprites) window->draw(sp);
+}
