@@ -9,19 +9,21 @@ Date: 2017/06
 
 #include "ControllerConfiguration.h"
 #include "imgui\ImGuiObject.h"
-
 #include "MyEntityManager.h"
 #include "MyMesh.h"
 #include "Player.h"
 
 namespace Simplex
 {
-//Adding Application to the Simplex namespace
+	//Adding Application to the Simplex namespace
 class Application
 {
 	MyEntityManager* m_pEntityMngr = nullptr; //Entity Manager
-    Player* currentPlayer;
-    int currentPlayerIndex;
+	vector3 m_v3Creeper; //position of the creeper
+	quaternion m_qCreeper; //orientation for the creeper
+  Player* currentPlayer;
+  int currentPlayerIndex;
+
 private:
 	String m_sProgrammer = "Team Scribble Hop"; //programmer
 
@@ -52,7 +54,6 @@ private:
 	LightManager* m_pLightMngr = nullptr; //Light Manager of the system
 	MeshManager* m_pMeshMngr = nullptr; //Mesh Manager
 	CameraManager* m_pCameraMngr = nullptr; //Singleton for the camera manager
-	
 	ControllerInput* m_pController[8]; //Controller
 	uint m_uActCont = 0; //Active Controller of the Application
 
@@ -61,13 +62,18 @@ private:
 	sf::Music m_soundBGM; //background music
 
 public:
+    GameState& state;
+    sf::Window* GetWindow() { return m_pWindow; }
+
+
 #pragma region Constructor / Run / Destructor
+    void RunFrame();
 	/*
 	USAGE: Constructor
 	ARGUMENTS: ---
 	OUTPUT: ---
 	*/
-	Application();
+	Application(GameState& s);
 	/*
 	USAGE: Initializes the window and rendering context
 	ARGUMENTS:
@@ -101,17 +107,19 @@ public:
 	ARGUMENTS: ---
 	OUTPUT: ---
 	*/
+
 	~Application(void);
+    /*
+    USAGE: Initialize the window
+    ARGUMENTS: String a_sWindowName = "GLFW" -> Window name
+    OUTPUT: ---
+    */
+    void InitWindow(String a_sWindowName = "Application");
 #pragma endregion
+
 
 private:
 #pragma region Initialization / Release
-	/*
-	USAGE: Initialize the window
-	ARGUMENTS: String a_sWindowName = "GLFW" -> Window name
-	OUTPUT: ---
-	*/
-	void InitWindow(String a_sWindowName = "Application");
 	/*
 	USAGE: Initializes user specific variables, this is executed right after InitWindow,
 	the purpose of this member function is to initialize member variables specific for this project.
@@ -333,9 +341,3 @@ private:
 }//namespace Simplex
 
 #endif //__APPLICATIONCLASS_H_
-
- /*
- USAGE:
- ARGUMENTS: ---
- OUTPUT: ---
- */
