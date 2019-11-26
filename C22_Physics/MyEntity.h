@@ -30,10 +30,11 @@ class MyEntity
 
 	bool m_bUsePhysicsSolver = false; //Indicates if we will use a physics solver 
 
-	MySolver* m_pSolver = nullptr; //Physics MySolver
-
+protected:
+    MySolver* m_pSolver = nullptr; //Physics MySolver
 public:
-	/*
+    virtual void Jump();
+    /*
 	Usage: Constructor that specifies the name attached to the MyEntity
 	Arguments:
 	-	String a_sFileName -> Name of the model to load
@@ -260,7 +261,7 @@ public:
 	ARGUMENTS: ---
 	OUTPUT: ---
 	*/
-	void Update(void);
+	virtual void Update(void);
 	/*
 	USAGE: Resolves using physics solver or not in the update
 	ARGUMENTS: bool a_bUse = true -> using physics solver?
