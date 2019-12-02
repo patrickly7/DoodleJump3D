@@ -111,9 +111,9 @@ void MySolver::Update(void)
 
 	m_v3Position += m_v3Velocity;		
 	// TODO - Remove Once Collision Resolution is Implemented
-	if (m_v3Position.y <= 0)
+	if (m_v3Position.y <= -25.0f)
 	{
-		m_v3Position.y = 0;
+		m_v3Position.y = -25.0f;
 		m_v3Velocity.y = 0;
         m_onAir = false;
 	}
