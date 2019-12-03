@@ -5,6 +5,8 @@ Date: 2017/06
 #ifndef __APPLICATIONCLASS_H_
 #define __APPLICATIONCLASS_H_
 
+#include <string>
+
 #include "Definitions.h"
 
 #include "ControllerConfiguration.h"
