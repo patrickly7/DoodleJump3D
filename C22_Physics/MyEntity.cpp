@@ -305,14 +305,41 @@ void Simplex::MyEntity::ApplyForce(vector3 a_v3Force)
 {
 	m_pSolver->ApplyForce(a_v3Force);
 }
+
 void Simplex::MyEntity::Update(void){}
-void Simplex::MyEntity::ResolveCollision(MyEntity* a_pOther)
+
+void Simplex::MyEntity::ResolvePlayerToPlatform(MyEntity* a_pPlatform)
 {
 	if (m_bUsePhysicsSolver)
 	{
-		m_pSolver->ResolveCollision(a_pOther->GetSolver());
+		m_pSolver->ResolvePlayerToPlatform(a_pPlatform->GetSolver());
 	}
 }
+
+void Simplex::MyEntity::ResolvePlayerToSpikeBed(MyEntity* a_pSpikeBed)
+{
+	if (m_bUsePhysicsSolver)
+	{
+		m_pSolver->ResolvePlayerToSpikeBed(a_pSpikeBed->GetSolver());
+	}
+}
+
+void Simplex::MyEntity::ResolvePlayerToWall(MyEntity* a_pWall)
+{
+	if (m_bUsePhysicsSolver)
+	{
+		m_pSolver->ResolvePlayerToWall(a_pWall->GetSolver());
+	}
+}
+
+void Simplex::MyEntity::ResolvePlatformToSpikeBed(MyEntity* a_pSpikeBed)
+{
+	if (m_bUsePhysicsSolver)
+	{
+		m_pSolver->ResolvePlatformToSpikeBed(a_pSpikeBed->GetSolver());
+	}
+}
+
 void Simplex::MyEntity::UsePhysicsSolver(bool a_bUse)
 {
 	m_bUsePhysicsSolver = a_bUse;

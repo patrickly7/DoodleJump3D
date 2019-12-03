@@ -109,37 +109,56 @@ void MySolver::Update(void)
 	ApplyFriction(m_friction);
 	m_v3Velocity = RoundSmallVelocity(m_v3Velocity, m_minVelocity);
 
-	m_v3Position += m_v3Velocity;		
-	// TODO - Remove Once Collision Resolution is Implemented
+	m_v3Position += m_v3Velocity;
 	if (m_v3Position.y <= -25.0f)
 	{
 		m_v3Position.y = -25.0f;
 		m_v3Velocity.y = 0;
-        m_onAir = false;
 	}
 
 	// Reset Acceleration
 	m_v3Acceleration = ZERO_V3;
 }
 
-void MySolver::ResolveCollision(MySolver* a_pOther)
+void MySolver::ResolvePlayerToPlatform(MySolver* a_pPlatform)
 {
-	float fMagThis = glm::length(m_v3Velocity);
-	float fMagOther = glm::length(m_v3Velocity);
-
-	if (fMagThis > 0.015f || fMagOther > 0.015f)
+	if (m_v3Position.y < a_pPlatform->m_v3Position.y)
 	{
-		//a_pOther->ApplyForce(GetVelocity());
-		ApplyForce(-m_v3Velocity);
-		a_pOther->ApplyForce(m_v3Velocity);
+		m_v3Position.y = a_pPlatform->m_v3Position.y;
 	}
-	else
+
+	if (m_v3Velocity.y <= 0)
 	{
-		vector3 v3Direction = m_v3Position - a_pOther->m_v3Position;
-		if(glm::length(v3Direction) != 0)
-			v3Direction = glm::normalize(v3Direction);
-		v3Direction *= 0.04f;
-		ApplyForce(v3Direction);
-		a_pOther->ApplyForce(-v3Direction);
+		m_onAir = false;
+	}
+}
+
+void MySolver::ResolvePlayerToSpikeBed(MySolver* a_pSpikeBed)
+{
+	// TODO - Game Over
+}
+
+void MySolver::ResolvePlayerToWall(MySolver* a_pWall)
+{
+	if (m_v3Position.x > 0.0f)
+		m_v3Position.x -= 1.0f;
+	else
+		m_v3Position.x += 1.0f;
+
+	if (m_v3Position.z > 0.0f)
+		m_v3Position.z -= 1.0f;
+	else
+		m_v3Position.z += 1.0f;
+
+	m_v3Velocity = vector3(-m_v3Velocity.x, m_v3Velocity.y, -m_v3Velocity.z);
+}
+
+void MySolver::ResolvePlatformToSpikeBed(MySolver* a_pSpikeBed)
+{
+	// TODO - What happens when a platform touches the spikes?
+	// Currently the "other" is the platform, "this" is spikebed
+	if (m_v3Position.y < a_pSpikeBed->m_v3Position.y)
+	{
+		m_v3Position.y = a_pSpikeBed->m_v3Position.y;
 	}
 }
