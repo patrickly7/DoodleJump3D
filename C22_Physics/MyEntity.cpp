@@ -36,7 +36,7 @@ bool Simplex::MyEntity::IsInitialized(void){ return m_bInMemory; }
 String Simplex::MyEntity::GetUniqueID(void) { return m_sUniqueID; }
 void Simplex::MyEntity::SetAxisVisible(bool a_bSetAxis) { m_bSetAxis = a_bSetAxis; }
 void Simplex::MyEntity::SetPosition(vector3 a_v3Position) { if(m_pSolver) m_pSolver->SetPosition(a_v3Position); }
-Simplex::vector3 Simplex::MyEntity::GetPosition(void)
+Simplex::vector3 Simplex::MyEntity::GetPosition(void) const
 {
 	if (m_pSolver != nullptr)
 		return m_pSolver->GetPosition();

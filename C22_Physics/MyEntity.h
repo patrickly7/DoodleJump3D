@@ -252,7 +252,7 @@ public:
 	ARGUMENTS: ---
 	OUTPUT: position of the solver
 	*/
-	vector3 GetPosition(void);
+	vector3 GetPosition(void) const;
 
 	/*
 	USAGE: Sets the velocity of the solver

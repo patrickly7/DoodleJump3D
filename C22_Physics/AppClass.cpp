@@ -10,6 +10,7 @@ void Application::InitVariables(void)
 		AXIS_Y);					//Up
 
 	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 13.0f), 1); //set the position of first light (0 is reserved for ambient light)
+	m_pEntityMngr = MyEntityManager::GetInstance();
 
 	// Add Player Entity (Index 0)
 	currentPlayer = new Player("Player00");
@@ -68,10 +69,13 @@ void Application::InitVariables(void)
 	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_1");
 	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(4.0f, 3.0f, -3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_1");
 	m_pEntityMngr->UsePhysicsSolver();
+
+    cameraController = new CameraController(*currentPlayer, vector3(0.0f, 3.0f, 0.0f), 4.0f, 50.0f);
 }
 
 void Application::Update(void)
 {
+    cameraController->Update();
 	//Update the system so it knows how much time has passed since the last call
 	m_pSystem->Update();
 

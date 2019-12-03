@@ -5,7 +5,7 @@
 #include "Definitions.h"
 using namespace Simplex;
 
-class Player : MyEntity
+class Player : public MyEntity
 {
 	vector3 jumpForce;
 	void Update();
