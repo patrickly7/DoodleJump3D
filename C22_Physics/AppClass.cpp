@@ -10,24 +10,33 @@ void Application::InitVariables(void)
 
 	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 13.0f), 1); //set the position of first light (0 is reserved for ambient light)
 
+
+	// Player initialization
     currentPlayer = new Player("Player00");
-	m_pEntityMngr->AddEntity("Minecraft\\Steve.obj", "Steve");
 
-	m_pEntityMngr->UsePhysicsSolver();
+	m_pEntityMngr->UsePhysicsSolver();	// -------- Can this get moved either above or below player init? Feels weird having it here.
+	
+	m_pEntityMngr->AddEntity((MyEntity*)currentPlayer);
+	currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00");
 
-	//scale and place these
+	// Platform initialization
 	for (int i = 0; i < 5; i++)
 	{
-		m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_" + std::to_string(i));
+		/*m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_0");
+		m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_1");*/
+		//m_pEntityMngr->AddEntity("Minecraft\Cube.obj", "Platform" + std::to_string(i));
+
+		platforms.push_back(new Platform("Platform_TEST_" + std::to_string(i)));
+		m_pEntityMngr->AddEntity((MyEntity*)platforms[i]);
+
+		// This is just to test if these are being created correctly, will remove later once spawing logic is completed
+		/*m_pEntityMngr->SetModelMatrix(glm::translate(vector3(-2.0f, -0.05f, 3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_0");
+		m_pEntityMngr->SetModelMatrix(glm::translate(vector3(4.0f, 3.0f, -3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_1");*/
+
+		m_pEntityMngr->SetModelMatrix(glm::translate(vector3(4.0f, i * 0.5f, -3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_TEST_" + std::to_string(i));
 	}
 
-	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_0");
-	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_1");
-
-	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(-2.0f, -0.05f, 3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_0");
-	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(4.0f, 3.0f, -3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_1");
-
-	// create and place pit of spikes (pawns)
+	// Spike Pit Initialization
 	for (int i = 0; i < 10; i++) 
 	{
 		for (int j = 0; j < 10; j++) 
@@ -36,8 +45,6 @@ void Application::InitVariables(void)
 			m_pEntityMngr->SetModelMatrix(glm::translate(vector3((i * 1.25f) - 5.5f, -5.0f, (j * 1.25f) - 5.5f)) * glm::scale(vector3(0.5f)), "Spike_" + std::to_string(i) + std::to_string(j));
 		} 
 	}
-    m_pEntityMngr->AddEntity((MyEntity*)currentPlayer);
-    currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00");
 }
 void Application::Update(void)
 {
