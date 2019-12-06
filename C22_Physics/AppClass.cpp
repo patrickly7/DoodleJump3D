@@ -16,6 +16,11 @@ void Application::InitVariables(void)
 	m_pEntityMngr->UsePhysicsSolver();
 
 	//scale and place these
+	for (int i = 0; i < 5; i++)
+	{
+		m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_" + std::to_string(i));
+	}
+
 	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_0");
 	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_1");
 
