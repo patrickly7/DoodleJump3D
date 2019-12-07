@@ -18,22 +18,21 @@ void Application::InitVariables(void)
 	
 	m_pEntityMngr->AddEntity((MyEntity*)currentPlayer);
 	currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00");
-
+	
 	// Platform initialization
+	srand(static_cast <unsigned> (time(0)));	// Seed for creating random values for platform placement
 	for (int i = 0; i < 5; i++)
 	{
-		/*m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_0");
-		m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_1");*/
-		//m_pEntityMngr->AddEntity("Minecraft\Cube.obj", "Platform" + std::to_string(i));
+		platforms.push_back(new Platform(
+			vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 10.0f - 5.0f, 
+				5.0f, 
+				(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 10.0f - 5.0f),
+			"Platform_TEST_" + std::to_string(i)));
 
-		platforms.push_back(new Platform("Platform_TEST_" + std::to_string(i)));
 		m_pEntityMngr->AddEntity((MyEntity*)platforms[i]);
 
 		// This is just to test if these are being created correctly, will remove later once spawing logic is completed
-		/*m_pEntityMngr->SetModelMatrix(glm::translate(vector3(-2.0f, -0.05f, 3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_0");
-		m_pEntityMngr->SetModelMatrix(glm::translate(vector3(4.0f, 3.0f, -3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_1");*/
-
-		m_pEntityMngr->SetModelMatrix(glm::translate(vector3(4.0f, i * 0.5f, -3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_TEST_" + std::to_string(i));
+		m_pEntityMngr->SetModelMatrix(glm::translate(vector3(platforms[i]->startPosition.x, platforms[i]->startPosition.y, platforms[i]->startPosition.z)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_TEST_" + std::to_string(i));
 	}
 
 	// Spike Pit Initialization
@@ -71,6 +70,12 @@ void Application::Display(void)
 {
 	// Clear the screen
 	ClearScreen();
+
+	// Platforms movement logic
+	/*for (int i = 0; i < platforms.size(); i++) 
+	{
+		platforms[i]->Move(m_pSystem);
+	}*/
 
 	// draw a skybox
 	m_pMeshMngr->AddSkyboxToRenderList();
