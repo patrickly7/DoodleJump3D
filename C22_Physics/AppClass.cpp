@@ -24,15 +24,15 @@ void Application::InitVariables(void)
 	for (int i = 0; i < 5; i++)
 	{
 		platforms.push_back(new Platform(
-			vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 20.0f - 10.0f, 
+			vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f, 
 				5.0f, 
-				(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 20.0f - 10.0f),
+				(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f),
 			"Platform_TEST_" + std::to_string(i)));
 
 		m_pEntityMngr->AddEntity((MyEntity*)platforms[i]);
 
 		// This is just to test if these are being created correctly, will remove later once spawing logic is completed
-		m_pEntityMngr->SetModelMatrix(glm::translate(vector3(platforms[i]->startPosition.x, platforms[i]->startPosition.y, platforms[i]->startPosition.z)) * glm::scale(vector3(2.0f, 0.1f, 2.0f)), "Platform_TEST_" + std::to_string(i));
+		m_pEntityMngr->SetModelMatrix(glm::translate(platforms[i]->startPosition) * glm::scale(vector3(3.0f, 0.1f, 3.0f)), "Platform_TEST_" + std::to_string(i));
 	}
 
 	// Spike Pit Initialization
@@ -72,10 +72,10 @@ void Application::Display(void)
 	ClearScreen();
 
 	// Platforms movement logic
-	/*for (int i = 0; i < platforms.size(); i++) 
+	for (int i = 0; i < platforms.size(); i++) 
 	{
-		platforms[i]->Move(m_pSystem);
-	}*/
+		platforms[i]->Move(m_pSystem, m_pEntityMngr, i);
+	}
 
 	// draw a skybox
 	m_pMeshMngr->AddSkyboxToRenderList();
