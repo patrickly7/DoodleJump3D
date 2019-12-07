@@ -24,15 +24,15 @@ void Application::InitVariables(void)
 	for (int i = 0; i < 5; i++)
 	{
 		platforms.push_back(new Platform(
-			vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 10.0f - 5.0f, 
+			vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 20.0f - 10.0f, 
 				5.0f, 
-				(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 10.0f - 5.0f),
+				(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 20.0f - 10.0f),
 			"Platform_TEST_" + std::to_string(i)));
 
 		m_pEntityMngr->AddEntity((MyEntity*)platforms[i]);
 
 		// This is just to test if these are being created correctly, will remove later once spawing logic is completed
-		m_pEntityMngr->SetModelMatrix(glm::translate(vector3(platforms[i]->startPosition.x, platforms[i]->startPosition.y, platforms[i]->startPosition.z)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_TEST_" + std::to_string(i));
+		m_pEntityMngr->SetModelMatrix(glm::translate(vector3(platforms[i]->startPosition.x, platforms[i]->startPosition.y, platforms[i]->startPosition.z)) * glm::scale(vector3(2.0f, 0.1f, 2.0f)), "Platform_TEST_" + std::to_string(i));
 	}
 
 	// Spike Pit Initialization
