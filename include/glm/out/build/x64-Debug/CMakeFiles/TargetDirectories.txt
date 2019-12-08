@@ -1,0 +1,3 @@
+C:/Users/Oblivione/Source/Repos/DoodleJump3D/include/glm/out/build/x64-Debug/CMakeFiles/glm_dummy.dir
+C:/Users/Oblivione/Source/Repos/DoodleJump3D/include/glm/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/Oblivione/Source/Repos/DoodleJump3D/include/glm/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
