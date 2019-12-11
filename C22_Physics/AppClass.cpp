@@ -1,6 +1,9 @@
 #include "AppClass.h"
 using namespace Simplex;
 
+constexpr float cylinderHeight = 70.0f;
+constexpr float cylinderRadius = 40.0f;
+
 void Application::InitVariables(void)
 {
 	// Set the position and target of the camera
@@ -19,19 +22,19 @@ void Application::InitVariables(void)
 	m_pEntityMngr->UsePhysicsSolver();
 
 	// Death Bed (Index 1)
-	auto spikeHeight = -25.0f;
-	auto scaleByThis = 40.0f;
+	auto spikeHeight = -cylinderHeight/2.0f;
+	auto scaleByThis = cylinderRadius*2.0f;
 
 	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Spike_Bed");
 	auto spikeBedMatrix = glm::translate(IDENTITY_M4, vector3(-scaleByThis / 2, spikeHeight, -scaleByThis / 2));
-	spikeBedMatrix = glm::scale(spikeBedMatrix, vector3(scaleByThis, 1.0f, scaleByThis));
+	spikeBedMatrix = glm::scale(spikeBedMatrix, vector3(scaleByThis, 2.0f, scaleByThis));
 	m_pEntityMngr->SetModelMatrix(spikeBedMatrix, "Spike_Bed");
 	m_pEntityMngr->UsePhysicsSolver();
 
 	// Walls (Index 2 - 9)
-	auto wallWidth = 20.0f;
-	auto wallHeight = 50.0f;
-	for (int index = 0; index < 8; index++)
+	auto wallWidth = cylinderRadius;
+	auto wallHeight = cylinderHeight;
+	for (int index = 0; index < 8; index++) //starts at 0 because base case (0) also generates a used wall
 	{
 		m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Wall_" + std::to_string(index));
 
@@ -40,21 +43,21 @@ void Application::InitVariables(void)
 		rotationMatrix *= glm::rotate(glm::radians(45.0f * index), vector3(0.0f, 0.0f, 1.0f));
 
 		// Position the Walls into a Cylindrical-Like Shape
-		auto translationMatrix = glm::translate(vector3(-wallWidth / 2, wallHeight / 2, -20.0f)); // Back
+		auto translationMatrix = glm::translate(vector3(-wallWidth / 2, wallHeight / 2, -wallWidth)); // Back
 		if (index == 1) // Back Right
-			translationMatrix = glm::translate(vector3(wallWidth / 2, wallHeight / 2, -20.0f));
+			translationMatrix = glm::translate(vector3(wallWidth / 2, wallHeight / 2, -wallWidth));
 		else if (index == 2) // Right
-			translationMatrix = glm::translate(vector3(wallWidth, wallHeight / 2, -10.0f));
+			translationMatrix = glm::translate(vector3(wallWidth, wallHeight / 2, -wallWidth/2.0f));
 		else if (index == 3) // Front Right
-			translationMatrix = glm::translate(vector3(wallWidth, wallHeight / 2, 10.0f));
+			translationMatrix = glm::translate(vector3(wallWidth, wallHeight / 2, wallWidth / 2.0f));
 		else if (index == 4) // Front
-			translationMatrix = glm::translate(vector3(wallWidth / 2, wallHeight / 2, 20.0f));
+			translationMatrix = glm::translate(vector3(wallWidth / 2, wallHeight / 2, wallWidth));
 		else if (index == 5) // Front Left
-			translationMatrix = glm::translate(vector3(-wallWidth / 2, wallHeight / 2, 20.0f));
+			translationMatrix = glm::translate(vector3(-wallWidth / 2, wallHeight / 2, wallWidth));
 		else if (index == 6) // Left
-			translationMatrix = glm::translate(vector3(-wallWidth, wallHeight / 2, 10.0f));
+			translationMatrix = glm::translate(vector3(-wallWidth, wallHeight / 2, wallWidth / 2.0f));
 		else if (index == 7) // Back Left
-			translationMatrix = glm::translate(vector3(-wallWidth, wallHeight / 2, -10.0f));
+			translationMatrix = glm::translate(vector3(-wallWidth, wallHeight / 2, -wallWidth / 2.0f));
 	
 		auto wallMatrix = translationMatrix * rotationMatrix * scalingMatrix;
 
@@ -100,17 +103,20 @@ void Application::Display(void)
 	// draw a skybox
 	m_pMeshMngr->AddSkyboxToRenderList();
 
-	float tubeHeight = 50.0f;
+	float tubeHeight = cylinderHeight;
 	// Draw a Tube to Represent the Play Area
-	m_pMeshMngr->AddTubeToRenderList(glm::scale(IDENTITY_M4, vector3(50.0f, tubeHeight, 50.f)), C_RED, 2);
+	m_pMeshMngr->AddTubeToRenderList(glm::scale(IDENTITY_M4, vector3(tubeHeight, tubeHeight, tubeHeight)), C_RED, 2);
 
 	// Draw the Spike Bed to Represent the Death Area
+    float sc = 4.0f;
+    float hei = -cylinderHeight / (2.0f * sc) + 1.0f;
+    vector3 starting(-cylinderRadius / sc, hei, -cylinderRadius / sc);
 	for (int i = 0; i < 20; i++)
 	{
 		for (int j = 0; j < 20; j++)
 		{
-			matrix4 modelMatrix = glm::scale(IDENTITY_M4, vector3(2.0f));
-			m_pMeshMngr->AddConeToRenderList(glm::translate(modelMatrix, vector3(-10.0f + (1.0f * j), -tubeHeight / 4 + 1.0f, -10.0f + (1.0f * i))), C_GRAY);
+			matrix4 modelMatrix = glm::scale(IDENTITY_M4, vector3(sc));
+			m_pMeshMngr->AddConeToRenderList(glm::translate(modelMatrix, starting + vector3((1.0f * j), 0.0f, (1.0f * i))), C_GRAY);
 		}
 	}
 
