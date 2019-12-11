@@ -199,11 +199,32 @@ public:
 	bool HasThisRigidBody(MyRigidBody* a_pRigidBody);
 
 	/*
-	USAGE: Asks the entity to resolve the collision with the incoming one
+	USAGE: Asks the player entity to resolve the collision with a platform
 	ARGUMENTS: MyEntity* a_pOther -> Queried entity
 	OUTPUT: ---
 	*/
-	void ResolveCollision(MyEntity* a_pOther);
+	void ResolvePlayerToPlatform(MyEntity* a_pPlatform);
+
+	/*
+	USAGE: Asks the player entity to resolve the collision with the spike bed
+	ARGUMENTS: MyEntity* a_pOther -> Queried entity
+	OUTPUT: ---
+	*/
+	void ResolvePlayerToSpikeBed(MyEntity* a_pSpikeBed);
+
+	/*
+	USAGE: Asks the player entity to resolve the collision with a wall
+	ARGUMENTS: MyEntity* a_pOther -> Queried entity
+	OUTPUT: ---
+	*/
+	void ResolvePlayerToWall(MyEntity* a_pWall);
+
+	/*
+	USAGE: Asks a platform entity to resolve the collision with the spike bed
+	ARGUMENTS: MyEntity* a_pOther -> Queried entity
+	OUTPUT: ---
+	*/
+	void ResolvePlatformToSpikeBed(MyEntity* a_pSpikeBed);
 
 	/*
 	USAGE: Gets the solver applied to this MyEntity
@@ -211,18 +232,21 @@ public:
 	OUTPUT: MySolver applied
 	*/
 	MySolver* GetSolver(void);
+
 	/*
 	USAGE: Applies a force to the solver
 	ARGUMENTS: vector3 a_v3Force -> force to apply
 	OUTPUT: ---
 	*/
 	void ApplyForce(vector3 a_v3Force);
+
 	/*
 	USAGE: Sets the position of the solver
 	ARGUMENTS: vector3 a_v3Position -> position to set
 	OUTPUT: ---
 	*/
 	void SetPosition(vector3 a_v3Position);
+
 	/*
 	USAGE: Gets the position of the solver
 	ARGUMENTS: ---
@@ -236,6 +260,7 @@ public:
 	OUTPUT: ---
 	*/
 	void SetVelocity(vector3 a_v3Velocity);
+
 	/*
 	USAGE: Gets the velocity of the solver
 	ARGUMENTS: ---
@@ -249,6 +274,7 @@ public:
 	OUTPUT: ---
 	*/
 	void SetMass(float a_fMass);
+
 	/*
 	USAGE: Gets mass of the solver
 	ARGUMENTS: ---
@@ -262,6 +288,7 @@ public:
 	OUTPUT: ---
 	*/
 	virtual void Update(void);
+
 	/*
 	USAGE: Resolves using physics solver or not in the update
 	ARGUMENTS: bool a_bUse = true -> using physics solver?
@@ -287,9 +314,3 @@ private:
 } //namespace Simplex
 
 #endif //__MYENTITY_H_
-
-/*
-USAGE:
-ARGUMENTS: ---
-OUTPUT: ---
-*/
