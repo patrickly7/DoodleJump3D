@@ -16,6 +16,8 @@ private:
 	vector3 otherForce;
     vector3 centerPosition;
     float movementFactor;
+    Movement_Key direction;
+    vector3 dir;
 
     void Update();
     void Jump();

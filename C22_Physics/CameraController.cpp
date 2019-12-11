@@ -13,7 +13,6 @@ void CameraController::Update() {
     if (dir == vector3(0.0f, 0.0f, 0.0f)) dir = vector3(1.0f, 0.0f, 0.0f);
     vector3 newPos = glm::normalize(dir) * RADIUS;
     newPos[1] = HEIGHT;
-    camera->SetPosition(newPos);
     camera->SetPositionTargetAndUpward(newPos, CENTER_POINT, vector3(0.0f, 1.0f, 0.0f));
-    printf("position %f, %f, %f\n", newPos.x, newPos.y, newPos.z);
+    //printf("!!CAMERA!! position %f, %f, %f\n", newPos.x, newPos.y, newPos.z);
 }

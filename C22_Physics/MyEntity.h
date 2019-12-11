@@ -20,8 +20,6 @@ class MyEntity
 	uint m_nDimensionCount = 0; //tells how many dimensions this entity lives in
 	uint* m_DimensionArray = nullptr; //Dimensions on which this entity is located
 
-	Model* m_pModel = nullptr; //Model associated with this MyEntity
-	MyRigidBody* m_pRigidBody = nullptr; //Rigid Body associated with this MyEntity
 
 	matrix4 m_m4ToWorld = IDENTITY_M4; //Model matrix associated with this MyEntity
 	MeshManager* m_pMeshMngr = nullptr; //For rendering shapes
@@ -32,6 +30,8 @@ class MyEntity
 
 protected:
     MySolver* m_pSolver = nullptr; //Physics MySolver
+    Model* m_pModel = nullptr; //Model associated with this MyEntity
+    MyRigidBody* m_pRigidBody = nullptr; //Rigid Body associated with this MyEntity
 public:
     virtual void Jump();
     /*
