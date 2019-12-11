@@ -73,7 +73,7 @@ void Application::InitVariables(void)
 	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(4.0f, 3.0f, -3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_1");
 	m_pEntityMngr->UsePhysicsSolver();
 
-    cameraController = new CameraController(*currentPlayer, vector3(0.0f, 3.0f, 0.0f), 4.0f, 50.0f);
+    cameraController = new CameraController(*currentPlayer, vector3(0.0f, 3.0f, 0.0f), cylinderHeight, cylinderRadius);
 }
 
 void Application::Update(void)
