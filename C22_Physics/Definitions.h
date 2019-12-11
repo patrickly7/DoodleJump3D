@@ -22,6 +22,17 @@ enum class GameState {
     CLOSE
 };
 
+enum class Movement_Key {
+    RIGHT,
+    TOP_RIGHT,
+    TOP,
+    TOP_LEFT,
+    LEFT,
+    BOTTOM_LEFT,
+    BOTTOM,
+    BOTTOM_RIGHT,
+    NONE
+};
 #endif //__DEFINITIONS_H_
 
 /*

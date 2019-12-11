@@ -15,10 +15,13 @@ void Application::InitVariables(void)
 	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 13.0f), 1); //set the position of first light (0 is reserved for ambient light)
 	m_pEntityMngr = MyEntityManager::GetInstance();
 
-	// Add Player Entity (Index 0)
-	currentPlayer = new Player("Player00");
-	m_pEntityMngr->AddEntity((MyEntity*)currentPlayer);
-	currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00");
+
+    m_pEntityMngr = MyEntityManager::GetInstance();
+    //m_pEntityMngr->AddEntity("Minecraft\\Steve.obj", "Steve");
+  
+    currentPlayer = new Player("Player00", vector3(0.0f, 0.0f, 0.0f));
+    currentPlayer->SetPosition(vector3(1.0f, 0.0f, 0.0f));
+  
 	m_pEntityMngr->UsePhysicsSolver();
 
 	// Death Bed (Index 1)
