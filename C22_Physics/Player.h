@@ -7,6 +7,7 @@
 #include "Definitions.h"
 
 using namespace Simplex;
+using std::map;
 
 class Player : public MyEntity
 {
@@ -18,7 +19,10 @@ private:
     float movementFactor;
     Movement_Key direction;
     vector3 dir;
+    map<Movement_Key, float> angleRotations;
 
+
+    void rotateTo(Movement_Key k);
     void Update();
     void Jump();
 public:
