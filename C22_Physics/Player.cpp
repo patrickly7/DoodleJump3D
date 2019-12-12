@@ -12,6 +12,7 @@ Player::Player(String ID, vector3 centerPos)
 
 void Player::Update() 
 {
+    centerPosition.y = GetPosition().y;
     m_pSolver->Update();
     SetModelMatrix(glm::translate(m_pSolver->GetPosition()) * glm::scale(m_pSolver->GetSize()));
 }
@@ -108,17 +109,27 @@ void Player::Move(Movement_Key k, float ellapsed) {
     default:
         return;
     }
-    movDir = -glm::normalize(movDir);
+    movDir = glm::normalize(movDir);
     printf("dir %f, %f, %f\n", movDir.x, movDir.y, movDir.z);
     if (direction != cur) {
+        //rotates local coordinates
         printf("CHANGED\n");
         auto q = fromTo(dir, movDir);
         auto aux = dir * q; //Result is correct
-        matrix4 m = glm::toMat4(q);
-        SetModelMatrix(GetModelMatrix() * m);
+        glm::vec3 s, t, sk; glm::vec4 per; glm::quat o;
+        matrix4 oldModel = GetModelMatrix();
+        glm::decompose(oldModel, s, o, t, sk, per);
+        o = q * o;
+        matrix4 scale = glm::scale(IDENTITY_M4, s);
+        matrix4 rotation = glm::toMat4(q);
+        matrix4 translation = glm::translate(IDENTITY_M4, pos);
+        matrix4 newModel = translation * rotation * scale;
+
+        SetModelMatrix(newModel);
         dir = movDir;
         direction = cur;
     }
-    ApplyForce(movDir * ellapsed * movementFactor);
+    // goes forward (in local coordinates)
+    ApplyForce(-fwDir * ellapsed * movementFactor);
     printf("position %f, %f, %f\n", pos.x, pos.y, pos.z);
 }
