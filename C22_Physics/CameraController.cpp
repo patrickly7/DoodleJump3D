@@ -3,6 +3,7 @@
 CameraController::CameraController(const Player& active, Simplex::vector3 center, float height, float radius) :
     ACTIVE_PLAYER(active), CENTER_POINT(center), HEIGHT(height), RADIUS(radius) {
     camera = Simplex::CameraManager::GetInstance();
+    camera->SetPosition(ACTIVE_PLAYER.GetPosition());
 };
 
 void CameraController::Update() {
