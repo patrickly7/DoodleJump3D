@@ -15,6 +15,7 @@ Date: 2017/06
 #include "MyMesh.h"
 #include "Player.h"
 #include "CameraController.h"
+#include "Platform.h"
 
 namespace Simplex
 {
@@ -26,7 +27,7 @@ class Application
 	quaternion m_qCreeper; //orientation for the creeper
   Player* currentPlayer;
   int currentPlayerIndex;
-
+	std::vector<Platform*> platforms;
 private:
     CameraController* cameraController;
 

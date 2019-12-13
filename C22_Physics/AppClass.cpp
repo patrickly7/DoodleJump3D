@@ -24,7 +24,16 @@ void Application::InitVariables(void)
     m_pEntityMngr->AddEntity((MyEntity*)currentPlayer);
     currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00");
 
-	m_pEntityMngr->UsePhysicsSolver();
+	// Platform initialization
+	srand(static_cast <unsigned> (time(0)));	// Seed for creating random values for platform placement
+	for (int i = 0; i < 5; i++)
+	{
+		platforms.push_back(new Platform(
+			vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f, 
+				5.0f, 
+				(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f),
+			"Platform_TEST_" + std::to_string(i)));
+
 
 	// Death Bed (Index 1)
 	auto spikeHeight = -cylinderHeight/2.0f;
@@ -40,6 +49,14 @@ void Application::InitVariables(void)
 	auto wallWidth = cylinderRadius;
 	auto wallHeight = cylinderHeight;
 	for (int index = 0; index < 8; index++) //starts at 0 because base case (0) also generates a used wall
+		m_pEntityMngr->AddEntity((MyEntity*)platforms[i]);
+
+		// This is just to test if these are being created correctly, will remove later once spawing logic is completed
+		m_pEntityMngr->SetModelMatrix(glm::translate(platforms[i]->startPosition) * glm::scale(vector3(3.0f, 0.1f, 3.0f)), "Platform_TEST_" + std::to_string(i));
+	}
+
+	// Spike Pit Initialization
+	for (int i = 0; i < 10; i++) 
 	{
 		m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Wall_" + std::to_string(index));
 
@@ -68,7 +85,6 @@ void Application::InitVariables(void)
 
 		m_pEntityMngr->SetModelMatrix(wallMatrix, "Wall_" + std::to_string(index));
 	}
-
 	// Platforms (Index 10+)
 	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_0");
 	m_pEntityMngr->SetModelMatrix(IDENTITY_M4 * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_0");
@@ -104,6 +120,12 @@ void Application::Display(void)
 {
 	// Clear the screen
 	ClearScreen();
+
+	// Platforms movement logic
+	for (int i = 0; i < platforms.size(); i++) 
+	{
+		platforms[i]->Move(m_pSystem, m_pEntityMngr, i);
+	}
 
 	// draw a skybox
 	m_pMeshMngr->AddSkyboxToRenderList();
