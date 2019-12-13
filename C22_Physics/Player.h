@@ -17,6 +17,8 @@ private:
 	vector3 otherForce;
     vector3 centerPosition;
     float movementFactor;
+    float cylinderRotation; //in radians
+    float currentAngle; //in radians
     Movement_Key direction;
     vector3 dir;
     map<Movement_Key, float> angleRotations;

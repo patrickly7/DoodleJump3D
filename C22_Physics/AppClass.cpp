@@ -20,21 +20,20 @@ void Application::InitVariables(void)
     //m_pEntityMngr->AddEntity("Minecraft\\Steve.obj", "Steve");
   
     currentPlayer = new Player("Player00", vector3(0.0f, 0.0f, 0.0f));
-    currentPlayer->SetPosition(vector3(10.0f, 0.0f, 10.0f));
+    currentPlayer->SetPosition(vector3(10.0f, 0.0f, 0.0f));
     m_pEntityMngr->AddEntity((MyEntity*)currentPlayer);
     currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00");
 
 	// Platform initialization
 	srand(static_cast <unsigned> (time(0)));	// Seed for creating random values for platform placement
-	for (int i = 0; i < 5; i++)
-	{
-		platforms.push_back(new Platform(
-			vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f, 
-				5.0f, 
-				(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f),
-			"Platform_TEST_" + std::to_string(i)));
-
-
+    for (int i = 0; i < 5; i++)
+    {
+        platforms.push_back(new Platform(
+            vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f,
+                5.0f,
+                (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f),
+            "Platform_TEST_" + std::to_string(i)));
+    }
 	// Death Bed (Index 1)
 	auto spikeHeight = -cylinderHeight/2.0f;
 	auto scaleByThis = cylinderRadius*2.0f;
@@ -48,51 +47,44 @@ void Application::InitVariables(void)
 	// Walls (Index 2 - 9)
 	auto wallWidth = cylinderRadius;
 	auto wallHeight = cylinderHeight;
-	for (int index = 0; index < 8; index++) //starts at 0 because base case (0) also generates a used wall
-		m_pEntityMngr->AddEntity((MyEntity*)platforms[i]);
+    for (int index = 0; index < 8; index++) //starts at 0 because base case (0) also generates a used wall
+    {
+        m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Wall_" + std::to_string(index));
 
-		// This is just to test if these are being created correctly, will remove later once spawing logic is completed
-		m_pEntityMngr->SetModelMatrix(glm::translate(platforms[i]->startPosition) * glm::scale(vector3(3.0f, 0.1f, 3.0f)), "Platform_TEST_" + std::to_string(i));
-	}
+        auto scalingMatrix = glm::scale(vector3(wallWidth, 0.5f, wallHeight));
+        auto rotationMatrix = glm::rotate(IDENTITY_M4, glm::radians(90.0f), vector3(1.0f, 0.0f, 0.0f));
+        rotationMatrix *= glm::rotate(glm::radians(45.0f * index), vector3(0.0f, 0.0f, 1.0f));
 
-	// Spike Pit Initialization
-	for (int i = 0; i < 10; i++) 
-	{
-		m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Wall_" + std::to_string(index));
+        // Position the Walls into a Cylindrical-Like Shape
+        auto translationMatrix = glm::translate(vector3(-wallWidth / 2, wallHeight / 2, -wallWidth)); // Back
+        if (index == 1) // Back Right
+            translationMatrix = glm::translate(vector3(wallWidth / 2, wallHeight / 2, -wallWidth));
+        else if (index == 2) // Right
+            translationMatrix = glm::translate(vector3(wallWidth, wallHeight / 2, -wallWidth / 2.0f));
+        else if (index == 3) // Front Right
+            translationMatrix = glm::translate(vector3(wallWidth, wallHeight / 2, wallWidth / 2.0f));
+        else if (index == 4) // Front
+            translationMatrix = glm::translate(vector3(wallWidth / 2, wallHeight / 2, wallWidth));
+        else if (index == 5) // Front Left
+            translationMatrix = glm::translate(vector3(-wallWidth / 2, wallHeight / 2, wallWidth));
+        else if (index == 6) // Left
+            translationMatrix = glm::translate(vector3(-wallWidth, wallHeight / 2, wallWidth / 2.0f));
+        else if (index == 7) // Back Left
+            translationMatrix = glm::translate(vector3(-wallWidth, wallHeight / 2, -wallWidth / 2.0f));
 
-		auto scalingMatrix = glm::scale(vector3(wallWidth, 0.5f, wallHeight));
-		auto rotationMatrix = glm::rotate(IDENTITY_M4, glm::radians(90.0f), vector3(1.0f, 0.0f, 0.0f));
-		rotationMatrix *= glm::rotate(glm::radians(45.0f * index), vector3(0.0f, 0.0f, 1.0f));
+        auto wallMatrix = translationMatrix * rotationMatrix * scalingMatrix;
 
-		// Position the Walls into a Cylindrical-Like Shape
-		auto translationMatrix = glm::translate(vector3(-wallWidth / 2, wallHeight / 2, -wallWidth)); // Back
-		if (index == 1) // Back Right
-			translationMatrix = glm::translate(vector3(wallWidth / 2, wallHeight / 2, -wallWidth));
-		else if (index == 2) // Right
-			translationMatrix = glm::translate(vector3(wallWidth, wallHeight / 2, -wallWidth/2.0f));
-		else if (index == 3) // Front Right
-			translationMatrix = glm::translate(vector3(wallWidth, wallHeight / 2, wallWidth / 2.0f));
-		else if (index == 4) // Front
-			translationMatrix = glm::translate(vector3(wallWidth / 2, wallHeight / 2, wallWidth));
-		else if (index == 5) // Front Left
-			translationMatrix = glm::translate(vector3(-wallWidth / 2, wallHeight / 2, wallWidth));
-		else if (index == 6) // Left
-			translationMatrix = glm::translate(vector3(-wallWidth, wallHeight / 2, wallWidth / 2.0f));
-		else if (index == 7) // Back Left
-			translationMatrix = glm::translate(vector3(-wallWidth, wallHeight / 2, -wallWidth / 2.0f));
-	
-		auto wallMatrix = translationMatrix * rotationMatrix * scalingMatrix;
+        m_pEntityMngr->SetModelMatrix(wallMatrix, "Wall_" + std::to_string(index));
+    }
 
-		m_pEntityMngr->SetModelMatrix(wallMatrix, "Wall_" + std::to_string(index));
-	}
-	// Platforms (Index 10+)
-	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_0");
-	m_pEntityMngr->SetModelMatrix(IDENTITY_M4 * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_0");
-	m_pEntityMngr->UsePhysicsSolver();
+    // Platforms (Index 10+)
+    m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_0");
+    m_pEntityMngr->SetModelMatrix(IDENTITY_M4 * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_0");
+    m_pEntityMngr->UsePhysicsSolver();
 
-	m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_1");
-	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(4.0f, 3.0f, -3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_1");
-	m_pEntityMngr->UsePhysicsSolver();
+    m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_1");
+    m_pEntityMngr->SetModelMatrix(glm::translate(vector3(4.0f, 3.0f, -3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_1");
+    m_pEntityMngr->UsePhysicsSolver();
 
     cameraController = new CameraController(*currentPlayer, vector3(0.0f, 3.0f, 0.0f), cylinderHeight, cylinderRadius);
 }
