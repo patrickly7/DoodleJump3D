@@ -6,7 +6,7 @@ constexpr float cylinderRadius = 40.0f;
 
 void Application::InitVariables(void)
 {
-	// Set the position and target of the camera
+    // Set the position and target of the camera
 	m_pCameraMngr->SetPositionTargetAndUpward(
 		vector3(0.0f, 5.0f, 25.0f), //Position
 		vector3(0.0f, 0.0f, 0.0f),	//Target
@@ -23,17 +23,6 @@ void Application::InitVariables(void)
     currentPlayer->SetPosition(vector3(10.0f, 0.0f, 0.0f));
     m_pEntityMngr->AddEntity((MyEntity*)currentPlayer);
     currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00");
-
-	// Platform initialization
-	srand(static_cast <unsigned> (time(0)));	// Seed for creating random values for platform placement
-    for (int i = 0; i < 5; i++)
-    {
-        platforms.push_back(new Platform(
-            vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f,
-                5.0f,
-                (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f),
-            "Platform_TEST_" + std::to_string(i)));
-    }
 
     //add central pillar
     m_pEntityMngr->AddEntity("Additional\\pillar.obj", "central_pillar");
