@@ -10,14 +10,14 @@ Player::Player(String ID, vector3 centerPos)
     dir = centerPos - GetPosition();
 
     angleRotations = {
-        { Movement_Key::RIGHT,          0.0f   + 135.0f },
-        { Movement_Key::TOP_RIGHT,      45.0f  + 135.0f },
-        { Movement_Key::TOP,            90.0f  + 135.0f },
-        { Movement_Key::TOP_LEFT,       135.0f + 135.0f },
-        { Movement_Key::LEFT,           180.0f + 135.0f },
-        { Movement_Key::BOTTOM_LEFT,    225.0f + 135.0f },
-        { Movement_Key::BOTTOM,         270.0f + 135.0f },
-        { Movement_Key::BOTTOM_RIGHT,   315.0f + 135.0f }
+        { Movement_Key::RIGHT,          glm::radians(0.0f   + 180.0f) },
+        { Movement_Key::TOP_RIGHT,      glm::radians(45.0f  + 180.0f) },
+        { Movement_Key::TOP,            glm::radians(90.0f  + 180.0f) },
+        { Movement_Key::TOP_LEFT,       glm::radians(135.0f + 180.0f) },
+        { Movement_Key::LEFT,           glm::radians(180.0f + 180.0f) },
+        { Movement_Key::BOTTOM_LEFT,    glm::radians(225.0f + 180.0f) },
+        { Movement_Key::BOTTOM,         glm::radians(270.0f + 180.0f) },
+        { Movement_Key::BOTTOM_RIGHT,   glm::radians(315.0f + 180.0f) }
     };
 }
 
@@ -45,21 +45,24 @@ void Player::Jump()
 }
 
 void Player::rotateTo(Movement_Key k) {
-    float angleFrom = angleRotations[direction];
-    float angleTo = angleRotations[k];
+    printf("=========\ncylinder = %f\n", glm::degrees(cylinderRotation));
+    float angleFrom = currentAngle;
+    float angleTo = angleRotations[k] - cylinderRotation;
     float angle = angleTo - angleFrom;
-    angle = glm::radians(angle);
+    currentAngle = angleTo;
     matrix4 old = GetModelMatrix();
     matrix4 newm = glm::rotate(old, angle, AXIS_Y);
     SetModelMatrix(newm);
 }
 void Player::Move(Movement_Key k, float ellapsed) {
     if (k == Movement_Key::NONE) return;
-    Movement_Key cur = k;
     auto pos = GetPosition();
-    if (direction != cur) {
-        rotateTo(cur);
-        direction = cur;
+    if (direction != k) {
+        auto dist = -glm::normalize(centerPosition - pos);
+        cylinderRotation = glm::acos(dist.x);
+        if (dist.z < 0.0f) cylinderRotation *= -1;
+        rotateTo(k);
+        direction = k;
     }
     // goes forward (in local coordinates)
     vector3 fwDir = glm::normalize(-centerPosition + pos);
