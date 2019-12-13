@@ -1,3 +1,4 @@
+
 #include "AppClass.h"
 using namespace Simplex;
 //Mouse
@@ -378,61 +379,88 @@ void Application::CameraRotation(float a_fSpeed)
 //Keyboard
 void Application::ProcessKeyboard(void)
 {
-	if (!m_bFocused)
-		return;
-	/*
-	This is used for things that are continuously happening,
-	for discreet on/off use ProcessKeyboardPressed/Released
-	*/
-	bool bMultiplier = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) ||
-		sf::Keyboard::isKeyPressed(sf::Keyboard::RShift);
+    if (!m_bFocused)
+        return;
+    /*
+    This is used for things that are continuously happening,
+    for discreet on/off use ProcessKeyboardPressed/Released
+    */
+    bool bMultiplier = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) ||
+        sf::Keyboard::isKeyPressed(sf::Keyboard::RShift);
 
-	float fMultiplier = 1.0f;
+    float fMultiplier = 1.0f;
 
-	if (bMultiplier)
-		fMultiplier = 5.0f;
+    if (bMultiplier)
+        fMultiplier = 5.0f;
+
 
 #pragma region Camera Position
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		m_pCameraMngr->MoveForward(m_fMovementSpeed * fMultiplier);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        m_pCameraMngr->MoveForward(m_fMovementSpeed * fMultiplier);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		m_pCameraMngr->MoveForward(-m_fMovementSpeed * fMultiplier);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        m_pCameraMngr->MoveForward(-m_fMovementSpeed * fMultiplier);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		m_pCameraMngr->MoveSideways(-m_fMovementSpeed * fMultiplier);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        m_pCameraMngr->MoveSideways(-m_fMovementSpeed * fMultiplier);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		m_pCameraMngr->MoveSideways(m_fMovementSpeed * fMultiplier);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        m_pCameraMngr->MoveSideways(m_fMovementSpeed * fMultiplier);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-		m_pCameraMngr->MoveVertical(-m_fMovementSpeed * fMultiplier);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+        m_pCameraMngr->MoveVertical(-m_fMovementSpeed * fMultiplier);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-		m_pCameraMngr->MoveVertical(m_fMovementSpeed * fMultiplier);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+        m_pCameraMngr->MoveVertical(m_fMovementSpeed * fMultiplier);
 #pragma endregion
 
 #pragma region Character Position
-	float fDelta = m_pSystem->GetDeltaTime(0);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-		m_pEntityMngr->ApplyForce(vector3(-2.0f * fDelta, 0.0f, 0.0f), currentPlayerIndex);
-	}
+    float fDelta = m_pSystem->GetDeltaTime(0);
+    Movement_Key m = Movement_Key::NONE;
+    int lr = 0, td = 0;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        lr = 1;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        --lr;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        td = 1;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        --td;
+    if (lr == 0) {
+        if (td == 1) m = Movement_Key::TOP;
+        else if (td == -1) m = Movement_Key::BOTTOM;
+    }
+    if (lr == 1) {
+        if (td == 1) m = Movement_Key::TOP_LEFT;
+        else if (td == -1) m = Movement_Key::BOTTOM_LEFT;
+        else m = Movement_Key::LEFT;
+    }
+    if (lr == -1) {
+        if (td == 1) m = Movement_Key::TOP_RIGHT;
+        else if (td == -1) m = Movement_Key::BOTTOM_RIGHT;
+        else m = Movement_Key::RIGHT;
+    }
+    currentPlayer->Move(m, fDelta);
+    //----------------------------------------
+    /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        m_pEntityMngr->ApplyForce(vector3(-2.0f * fDelta, 0.0f, 0.0f), currentPlayerIndex);
+    }
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-		m_pEntityMngr->ApplyForce(vector3(2.0f * fDelta, 0.0f, 0.0f), currentPlayerIndex);
-	}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        m_pEntityMngr->ApplyForce(vector3(2.0f * fDelta, 0.0f, 0.0f), currentPlayerIndex);
+    }
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-		m_pEntityMngr->ApplyForce(vector3(0.0f, 0.0f, -2.0f * fDelta), currentPlayerIndex);
-	}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        m_pEntityMngr->ApplyForce(vector3(0.0f, 0.0f, -2.0f * fDelta), currentPlayerIndex);
+    }
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-		m_pEntityMngr->ApplyForce(vector3(0.0f, 0.0f, 2.0f * fDelta), currentPlayerIndex);
-	}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        m_pEntityMngr->ApplyForce(vector3(0.0f, 0.0f, 2.0f * fDelta), currentPlayerIndex);
+    }*/
 #pragma endregion
 }
 //Joystick

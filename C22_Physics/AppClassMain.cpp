@@ -1,4 +1,4 @@
-#include "AppClass.h"
+    #include "AppClass.h"
 using namespace Simplex;
 sf::Image LoadImageFromResource(const std::string& name)
 {
@@ -24,11 +24,13 @@ sf::Image LoadImageFromResource(const std::string& name)
 
 	return image;
 }
-Application::Application() {}
-Application::Application(Application const& input) {}
+Application::Application(GameState& s) : state(s) {}
+Application::Application(Application const& input) : state(input.state) {}
 Application& Application::operator=(Application const& input) { return *this; }
 Application::~Application(void) 
 {
+    delete cameraController;
+
 	Release();
 	
 	//release controllers
@@ -254,17 +256,17 @@ void Application::Init(String a_sApplicationName, uint a_uWidth, uint a_uHeight,
 	//Init controllers
 	InitControllers();
 
-	//Init Entity Manager
-	m_pEntityMngr = MyEntityManager::GetInstance();
-
 	//Init variables
 	InitVariables();
 
 	//Initializated flag
 	bInitializated = true;
+
 }
 void Application::InitWindow(String a_sWindowName)
 {
+    if (m_pWindow == nullptr) m_pWindow = new sf::Window();
+
 	uint uStyle = sf::Style::Default;
 
 	if (m_pSystem->IsWindowBorderless())
@@ -274,7 +276,7 @@ void Application::InitWindow(String a_sWindowName)
 		uStyle = sf::Style::Fullscreen;
 		
 	//If OpenGL 4.5 is not supported in the system glfw will warn you and determine the highest possible version
-	m_pWindow = new sf::Window(	sf::VideoMode(m_pSystem->GetWindowWidth(), m_pSystem->GetWindowHeight(), 32), //Window size
+	m_pWindow->create(	sf::VideoMode(m_pSystem->GetWindowWidth(), m_pSystem->GetWindowHeight(), 32), //Window size
 								a_sWindowName, //window name
 								uStyle, //window style
 								sf::ContextSettings(	24, //depth buffer
@@ -467,4 +469,85 @@ void Application::WriteConfig(void)
 	fprintf(pFile, "\nTextures:	%s", m_pSystem->m_pFolder->GetFolderTextures().c_str());
 
 	fclose(pFile);
+}
+void Application::RunFrame() {
+    // handle events
+    sf::Event appEvent;
+    sf::Vector2i pos;
+    sf::Vector2u size;
+    while (m_pWindow->pollEvent(appEvent))
+    {
+        switch (appEvent.type)
+        {
+        case sf::Event::Closed:
+            // end the program
+            m_bRunning = false;
+            state = GameState::CLOSE;
+            break;
+        case sf::Event::Resized:
+            size = m_pWindow->getSize();
+            m_pSystem->SetWindowWidth(size.x);
+            m_pSystem->SetWindowHeight(size.y);
+            Reshape();
+            break;
+        case sf::Event::MouseMoved:
+            ProcessMouseMovement(appEvent);
+            pos = m_pWindow->getPosition();
+            size = m_pWindow->getSize();
+            m_pSystem->SetWindowX(pos.x);
+            m_pSystem->SetWindowY(pos.y);
+            m_pSystem->SetWindowWidth(size.x);
+            m_pSystem->SetWindowHeight(size.y);
+            break;
+        case sf::Event::MouseButtonPressed:
+            ProcessMousePressed(appEvent);
+            break;
+        case sf::Event::MouseButtonReleased:
+            ProcessMouseReleased(appEvent);
+            break;
+        case sf::Event::MouseWheelScrolled:
+            ProcessMouseScroll(appEvent);
+            break;
+        case sf::Event::KeyPressed:
+            if (appEvent.key.code == sf::Keyboard::Key::P)
+                state = GameState::PAUSE_MENU;
+            else if (appEvent.key.code == sf::Keyboard::Key::M)
+                state = GameState::END_MENU;
+            else
+                ProcessKeyPressed(appEvent);
+            break;
+        case sf::Event::KeyReleased:
+            ProcessKeyReleased(appEvent);
+            break;
+        case sf::Event::TextEntered:
+            if (appEvent.text.unicode > 0 && appEvent.text.unicode < 0x10000)
+                ImGui::GetIO().AddInputCharacter(appEvent.text.unicode);
+            break;
+        case sf::Event::JoystickButtonPressed:
+            ProcessJoystickPressed(appEvent);
+            break;
+        case sf::Event::JoystickButtonReleased:
+            ProcessJoystickReleased(appEvent);
+            break;
+        case sf::Event::JoystickMoved:
+            ProcessJoystickMoved(appEvent);
+            break;
+        case sf::Event::JoystickConnected:
+            ProcessJoystickConnected(appEvent.joystickConnect.joystickId);
+            break;
+        case sf::Event::JoystickDisconnected:
+            InitControllers();
+            break;
+        case sf::Event::GainedFocus:
+            m_bFocused = true;
+            break;
+        case sf::Event::LostFocus:
+            m_bFocused = false;
+            break;
+        }
+    }
+    ProcessKeyboard();//Continuous events
+    ProcessJoystick();//Continuous events
+    Update();
+    Display();
 }

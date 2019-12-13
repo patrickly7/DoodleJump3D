@@ -25,6 +25,7 @@ namespace Simplex
 		const float m_maxVelocity = 5.0f; // Upper bound for Velocity
 
 		bool m_onAir = false; // Check if Object is in the Air
+		bool m_staticObject = true; // Check if this Object is Meant to Move
 
 	public:
 		/*
@@ -151,11 +152,32 @@ namespace Simplex
 		void Update(void);
 
 		/*
-		USAGE: Resolve the collision between two solvers
+		USAGE: Resolve the collision between the player and a platform
 		ARGUMENTS: MySolver* a_pOther -> other solver to resolve collision with
 		OUTPUT: ---
 		*/
-		void ResolveCollision(MySolver* a_pOther);
+		void ResolvePlayerToPlatform(MySolver* a_pPlatform);
+
+		/*
+		USAGE: Resolve the collision between the player and the spike bed
+		ARGUMENTS: MySolver* a_pOther -> other solver to resolve collision with
+		OUTPUT: ---
+		*/
+		void ResolvePlayerToSpikeBed(MySolver* a_pSpikeBed);
+
+		/*
+		USAGE: Resolve the collision between the player and a wall
+		ARGUMENTS: MySolver* a_pOther -> other solver to resolve collision with
+		OUTPUT: ---
+		*/
+		void ResolvePlayerToWall(MySolver* a_pWall);
+
+		/*
+		USAGE: Resolve the collision between a platform and the spike bed
+		ARGUMENTS: MySolver* a_pOther -> other solver to resolve collision with
+		OUTPUT: ---
+		*/
+		void ResolvePlatformToSpikeBed(MySolver* a_pSpikeBed);
 
 	private:
 		/*

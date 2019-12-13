@@ -14,6 +14,25 @@ Date: 2017/06
 #include "SFML\OpenGL.hpp"
 #include "SFML\Audio.hpp"
 
+enum class GameState {
+    MAIN_MENU,
+    GAME,
+    PAUSE_MENU,
+    END_MENU,
+    CLOSE
+};
+
+enum class Movement_Key {
+    RIGHT,
+    TOP_RIGHT,
+    TOP,
+    TOP_LEFT,
+    LEFT,
+    BOTTOM_LEFT,
+    BOTTOM,
+    BOTTOM_RIGHT,
+    NONE
+};
 #endif //__DEFINITIONS_H_
 
 /*

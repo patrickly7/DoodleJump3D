@@ -36,7 +36,7 @@ bool Simplex::MyEntity::IsInitialized(void){ return m_bInMemory; }
 String Simplex::MyEntity::GetUniqueID(void) { return m_sUniqueID; }
 void Simplex::MyEntity::SetAxisVisible(bool a_bSetAxis) { m_bSetAxis = a_bSetAxis; }
 void Simplex::MyEntity::SetPosition(vector3 a_v3Position) { if(m_pSolver) m_pSolver->SetPosition(a_v3Position); }
-Simplex::vector3 Simplex::MyEntity::GetPosition(void)
+Simplex::vector3 Simplex::MyEntity::GetPosition(void) const
 {
 	if (m_pSolver != nullptr)
 		return m_pSolver->GetPosition();
@@ -305,14 +305,41 @@ void Simplex::MyEntity::ApplyForce(vector3 a_v3Force)
 {
 	m_pSolver->ApplyForce(a_v3Force);
 }
+
 void Simplex::MyEntity::Update(void){}
-void Simplex::MyEntity::ResolveCollision(MyEntity* a_pOther)
+
+void Simplex::MyEntity::ResolvePlayerToPlatform(MyEntity* a_pPlatform)
 {
 	if (m_bUsePhysicsSolver)
 	{
-		m_pSolver->ResolveCollision(a_pOther->GetSolver());
+		m_pSolver->ResolvePlayerToPlatform(a_pPlatform->GetSolver());
 	}
 }
+
+void Simplex::MyEntity::ResolvePlayerToSpikeBed(MyEntity* a_pSpikeBed)
+{
+	if (m_bUsePhysicsSolver)
+	{
+		m_pSolver->ResolvePlayerToSpikeBed(a_pSpikeBed->GetSolver());
+	}
+}
+
+void Simplex::MyEntity::ResolvePlayerToWall(MyEntity* a_pWall)
+{
+	if (m_bUsePhysicsSolver)
+	{
+		m_pSolver->ResolvePlayerToWall(a_pWall->GetSolver());
+	}
+}
+
+void Simplex::MyEntity::ResolvePlatformToSpikeBed(MyEntity* a_pSpikeBed)
+{
+	if (m_bUsePhysicsSolver)
+	{
+		m_pSolver->ResolvePlatformToSpikeBed(a_pSpikeBed->GetSolver());
+	}
+}
+
 void Simplex::MyEntity::UsePhysicsSolver(bool a_bUse)
 {
 	m_bUsePhysicsSolver = a_bUse;
