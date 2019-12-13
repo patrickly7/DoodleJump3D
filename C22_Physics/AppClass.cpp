@@ -20,7 +20,7 @@ void Application::InitVariables(void)
     //m_pEntityMngr->AddEntity("Minecraft\\Steve.obj", "Steve");
   
     currentPlayer = new Player("Player00", vector3(0.0f, 0.0f, 0.0f));
-    currentPlayer->SetPosition(vector3(10.0f, 0.0f, 0.0f));
+    currentPlayer->SetPosition(vector3(10.0f, 0.0f, 10.0f));
     m_pEntityMngr->AddEntity((MyEntity*)currentPlayer);
     currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00");
 

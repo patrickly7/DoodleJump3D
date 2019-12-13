@@ -10,14 +10,14 @@ Player::Player(String ID, vector3 centerPos)
     dir = centerPos - GetPosition();
 
     angleRotations = {
-        { Movement_Key::RIGHT, 0.0f },
-        { Movement_Key::TOP_RIGHT, 45.0f },
-        { Movement_Key::TOP, 90.0f },
-        { Movement_Key::TOP_LEFT, 135.0f },
-        { Movement_Key::LEFT, 180.0f },
-        { Movement_Key::BOTTOM_LEFT, 225.0f },
-        { Movement_Key::BOTTOM, 270.0f },
-        { Movement_Key::BOTTOM_RIGHT, 315.0f }
+        { Movement_Key::RIGHT,          0.0f   + 135.0f },
+        { Movement_Key::TOP_RIGHT,      45.0f  + 135.0f },
+        { Movement_Key::TOP,            90.0f  + 135.0f },
+        { Movement_Key::TOP_LEFT,       135.0f + 135.0f },
+        { Movement_Key::LEFT,           180.0f + 135.0f },
+        { Movement_Key::BOTTOM_LEFT,    225.0f + 135.0f },
+        { Movement_Key::BOTTOM,         270.0f + 135.0f },
+        { Movement_Key::BOTTOM_RIGHT,   315.0f + 135.0f }
     };
 }
 
@@ -27,8 +27,12 @@ void Player::Update()
     centerPosition.y = GetPosition().y;
     m_pSolver->Update();
     vector3 npos = GetPosition();
-
-    SetModelMatrix(glm::translate(GetModelMatrix(), npos - pos));
+    vector3 movement = npos - pos;
+    if (isnan(movement.x))
+        int a = 0;
+    matrix4 old = GetModelMatrix();
+    old[3] = vector4(npos,1.0f);
+    SetModelMatrix(old);
 }
 
 void Player::Jump() 
@@ -41,10 +45,9 @@ void Player::Jump()
 }
 
 void Player::rotateTo(Movement_Key k) {
-    float angleFrom = -angleRotations[direction];
+    float angleFrom = angleRotations[direction];
     float angleTo = angleRotations[k];
     float angle = angleTo - angleFrom;
-    printf("Angle To = %f\n", angleTo);
     angle = glm::radians(angle);
     matrix4 old = GetModelMatrix();
     matrix4 newm = glm::rotate(old, angle, AXIS_Y);
@@ -66,39 +69,32 @@ void Player::Move(Movement_Key k, float ellapsed) {
     {
     case Movement_Key::RIGHT:
         movDir = -glm::cross(upDir, fwDir);
-        cur = Movement_Key::RIGHT;
         break;
     case Movement_Key::TOP_RIGHT:
         movDir = (-glm::normalize(glm::cross(upDir, fwDir)) + fwDir) * 0.5f;
-        cur = Movement_Key::TOP_RIGHT;
         break;
     case Movement_Key::TOP:
         movDir = fwDir;
-        cur = Movement_Key::TOP;
         break;
     case Movement_Key::TOP_LEFT:
         movDir = (glm::normalize(glm::cross(upDir, fwDir)) + fwDir) * 0.5f;
-        cur = Movement_Key::TOP_LEFT;
         break;
     case Movement_Key::LEFT:
         movDir = glm::cross(upDir, fwDir);
-        cur = Movement_Key::LEFT;
         break;
     case Movement_Key::BOTTOM_LEFT:
         movDir = (glm::normalize(glm::cross(upDir, fwDir)) - fwDir) * 0.5f;
-        cur = Movement_Key::BOTTOM_LEFT;
         break;
     case Movement_Key::BOTTOM:
         movDir = -fwDir;
-        cur = Movement_Key::BOTTOM;
         break;
     case Movement_Key::BOTTOM_RIGHT:
         movDir = (-glm::normalize(glm::cross(upDir, fwDir)) - fwDir) * 0.5f;
-        cur = Movement_Key::BOTTOM_RIGHT;
         break;
     default:
         return;
     }
     movDir = -glm::normalize(movDir);
+    vector3 movement = GetPosition();
     ApplyForce(movDir * ellapsed * movementFactor);
 }
