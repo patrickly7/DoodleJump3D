@@ -25,8 +25,8 @@ class Application
 	MyEntityManager* m_pEntityMngr = nullptr; //Entity Manager
 	vector3 m_v3Creeper; //position of the creeper
 	quaternion m_qCreeper; //orientation for the creeper
-  Player* currentPlayer;
-  int currentPlayerIndex;
+    Player* currentPlayer;
+    int currentPlayerIndex;
 	std::vector<Platform*> platforms;
 private:
     CameraController* cameraController;

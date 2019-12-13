@@ -19,7 +19,7 @@ void Application::InitVariables(void)
     m_pEntityMngr = MyEntityManager::GetInstance();
     //m_pEntityMngr->AddEntity("Minecraft\\Steve.obj", "Steve");
   
-    currentPlayer = new Player("Player00", vector3(0.0f, 0.0f, 0.0f));
+    currentPlayer = new Player("Player00", vector3(0.0f, 0.0f, 0.0f), cylinderRadius, 7.0f);
     currentPlayer->SetPosition(vector3(10.0f, 0.0f, 0.0f));
     m_pEntityMngr->AddEntity((MyEntity*)currentPlayer);
     currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00");
@@ -34,6 +34,13 @@ void Application::InitVariables(void)
                 (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f),
             "Platform_TEST_" + std::to_string(i)));
     }
+
+    //add central pillar
+    m_pEntityMngr->AddEntity("Additional\\pillar.obj", "central_pillar");
+    m_pEntityMngr->SetModelMatrix(glm::scale(IDENTITY_M4, vector3(3.0f, 10.0f, 3.0f)), "central_pillar");
+    m_pEntityMngr->UsePhysicsSolver();
+
+
 	// Death Bed (Index 1)
 	auto spikeHeight = -cylinderHeight/2.0f;
 	auto scaleByThis = cylinderRadius*2.0f;

@@ -1,7 +1,7 @@
 #include "Player.h"
 
-Player::Player(String ID, vector3 centerPos) 
-: MyEntity("Minecraft\\Steve.obj", ID)
+Player::Player(String ID, vector3 centerPos, float outer, float inner)
+: OUTER_RADIUS(outer), INNER_RADIUS(inner), MyEntity("Minecraft\\Steve.obj", ID)
 {
     centerPosition = centerPos;
     jumpForce = vector3(0.0f, 1.5f, 0.0f);
@@ -27,6 +27,9 @@ void Player::Update()
     centerPosition.y = GetPosition().y;
     m_pSolver->Update();
     vector3 npos = GetPosition();
+    auto dist = glm::length(npos - centerPosition);
+    if (dist <= INNER_RADIUS || dist >= OUTER_RADIUS)
+        npos = pos;
     vector3 movement = npos - pos;
     if (isnan(movement.x))
         int a = 0;
@@ -45,7 +48,6 @@ void Player::Jump()
 }
 
 void Player::rotateTo(Movement_Key k) {
-    printf("=========\ncylinder = %f\n", glm::degrees(cylinderRotation));
     float angleFrom = currentAngle;
     float angleTo = angleRotations[k] - cylinderRotation;
     float angle = angleTo - angleFrom;
