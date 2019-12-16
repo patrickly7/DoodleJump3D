@@ -110,6 +110,12 @@ void Application::Update(void)
 
 void Application::Display(void)
 {
+	// Check if the Game has Ended (Player has hit Spikes)
+	if (m_pEntityMngr->GetIsGameOver())
+	{
+		state = GameState::END_MENU;
+	}
+
 	// Clear the screen
 	ClearScreen();
 
@@ -137,6 +143,12 @@ void Application::Display(void)
 			matrix4 modelMatrix = glm::scale(IDENTITY_M4, vector3(sc));
 			m_pMeshMngr->AddConeToRenderList(glm::translate(modelMatrix, starting + vector3((1.0f * j), 0.0f, (1.0f * i))), C_GRAY);
 		}
+	}
+
+	// Only Update the Total Time Played While Not Paused/Over
+	if (state == GameState::GAME)
+	{	
+		m_timePlaying += 0.01f;
 	}
 
 	//render list call

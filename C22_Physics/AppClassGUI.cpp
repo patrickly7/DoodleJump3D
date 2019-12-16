@@ -8,15 +8,19 @@ void Application::DrawGUI(void)
 	uint nEmptyLines = 20;
 	for (uint i = 0; i < nEmptyLines; ++i)
 		m_pMeshMngr->PrintLine("");//Add a line on top
-	//m_pMeshMngr->Print("						");
+	
+	// App Name
 	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), C_YELLOW);
-	//m_pMeshMngr->Print("						");
+	
+	// Current Score
+	m_pMeshMngr->Print("Score: ");
+	m_pMeshMngr->PrintLine(std::to_string((int)(m_timePlaying * 50.0f)), C_BLUE);
 
-	//m_pMeshMngr->Print("						");
-	m_pMeshMngr->Print("RenderCalls: ");//Add a line on top
+	// Number of Render Calls
+	m_pMeshMngr->Print("RenderCalls: ");
 	m_pMeshMngr->PrintLine(std::to_string(m_uRenderCallCount), C_YELLOW);
-
-	//m_pMeshMngr->Print("						");
+	
+	// FPS Display
 	m_pMeshMngr->Print("FPS:");
 	m_pMeshMngr->PrintLine(std::to_string(m_pSystem->GetFPS()), C_RED);
 #pragma endregion
@@ -39,14 +43,18 @@ void Application::DrawGUI(void)
 			ImGui::Text("FrameRate: %.2f [FPS] -> %.3f [ms/frame]\n",
 				ImGui::GetIO().Framerate, 1000.0f / ImGui::GetIO().Framerate);
 			ImGui::Separator();
+
 			ImGui::Text("Control:\n");
 			ImGui::Text("   WASD: Movement\n");
 			ImGui::Text("	 F1: Perspective\n");
-			ImGui::Text("	 F2: Orthographic X\n");
-			ImGui::Text("	 F3: Orthographic Y\n");
-			ImGui::Text("	 F4: Orthographic Z\n");
+			ImGui::Text("	 F2: Orthographic X\n"); // Get rid of
+			ImGui::Text("	 F3: Orthographic Y\n"); // get rid of
+			ImGui::Text("	 F4: Orthographic Z\n"); // get rid of
 			ImGui::Separator();
 			ImGui::Text("Arrows: Apply force to Steve\n");
+			ImGui::Separator();
+
+			ImGui::Text("Score: \n");
 		}
 		ImGui::End();
 	}
