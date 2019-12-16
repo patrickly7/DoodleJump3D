@@ -67,6 +67,8 @@ private:
 	sf::Sound m_sound; //sound effect
 	sf::Music m_soundBGM; //background music
 
+	float m_timePlaying = 0; // Time Played for Score
+
 public:
     GameState& state;
     sf::Window* GetWindow() { return m_pWindow; }

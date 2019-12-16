@@ -206,13 +206,6 @@ public:
 	void ResolvePlayerToPlatform(MyEntity* a_pPlatform);
 
 	/*
-	USAGE: Asks the player entity to resolve the collision with the spike bed
-	ARGUMENTS: MyEntity* a_pOther -> Queried entity
-	OUTPUT: ---
-	*/
-	void ResolvePlayerToSpikeBed(MyEntity* a_pSpikeBed);
-
-	/*
 	USAGE: Asks the player entity to resolve the collision with a wall
 	ARGUMENTS: MyEntity* a_pOther -> Queried entity
 	OUTPUT: ---
