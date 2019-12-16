@@ -17,6 +17,8 @@ class MyEntityManager
 	uint m_uEntityCount = 0; //number of elements in the list
 	PEntity* m_mEntityArray = nullptr; //array of MyEntity pointers
 	static MyEntityManager* m_pInstance; // Singleton pointer
+	bool m_isGameOver = false; // Monitoring for Game End
+
 public:
     void AddEntity(MyEntity* ent);
 
@@ -315,6 +317,13 @@ public:
 	OUTPUT: ---
 	*/
 	void UsePhysicsSolver(bool a_bUse = true, uint a_uIndex = -1);
+
+	/*
+	USAGE: Gets the current game state to see if the game should end
+	ARGUMENTS: None
+	OUTPUT: Current Game Status
+	*/
+	bool GetIsGameOver(void);
 private:
 	/*
 	Usage: constructor

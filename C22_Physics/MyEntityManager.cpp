@@ -185,12 +185,18 @@ void Simplex::MyEntityManager::Update(void)
 			if (m_mEntityArray[i]->IsColliding(m_mEntityArray[j]))
 			{
 				// Player to Platform Collision
-				if (i == 0 && j > 9)
+				if (i == 0 && j > 9) {
 					m_mEntityArray[i]->ResolvePlayerToPlatform(m_mEntityArray[j]);
+					std::cout << "plat" << std::endl;
+				}
 
 				// Player to SpikeBed Collision
 				else if (i == 0 && j == 1)
-					m_mEntityArray[i]->ResolvePlayerToSpikeBed(m_mEntityArray[j]);
+					// m_mEntityArray[i]->ResolvePlayerToSpikeBed(m_mEntityArray[j]);
+				{
+					std::cout << "hitting_spikes" << std::endl;
+					m_isGameOver = true;
+				}
 
 				// Player to Wall Collision
 				else if (i == 0 && j > 1 && j < 10)
@@ -536,4 +542,9 @@ void Simplex::MyEntityManager::UsePhysicsSolver(bool a_bUse, uint a_uIndex)
 		a_uIndex = m_uEntityCount - 1;
 
 	return m_mEntityArray[a_uIndex]->UsePhysicsSolver(a_bUse);
+}
+
+bool Simplex::MyEntityManager::GetIsGameOver(void)
+{
+	return m_isGameOver;
 }
