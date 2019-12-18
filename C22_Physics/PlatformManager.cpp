@@ -4,8 +4,8 @@ PlatformManager::PlatformManager(const vector3& center, float height, float inne
     : CENTER(center), HEIGHT(height), INNER_RADIUS(innerRadius), OUTER_RADIUS(outerRadius)
 {
     // Platform initialization -- initial state of platforms
-    //At any time there is a platform every 5units in the y direction.
-    //The first element of the deque in the one in the bottom and the 
+    // At any time there is a platform every 5units in the y direction.
+    // The first element of the deque in the one in the bottom and the 
     // last elemente is at the top
     int initialsPlatforms = std::floor(height / 5.0f);
     for (int i = 1; i < initialsPlatforms; i++) {

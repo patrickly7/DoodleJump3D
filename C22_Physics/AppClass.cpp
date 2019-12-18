@@ -75,7 +75,9 @@ void Application::InitVariables(void)
 
     // Platforms (Index 10+)
     m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_0");
-    m_pEntityMngr->SetModelMatrix(IDENTITY_M4 * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_0");
+
+    m_pEntityMngr->SetModelMatrix(glm::scale(glm::translate(IDENTITY_M4, vector3(0.0f, -20.0f, -15.0f)),
+                                     vector3(50.0f, 0.1f, 50.0f)), "Platform_0");
     m_pEntityMngr->UsePhysicsSolver();
 
     m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_1");
