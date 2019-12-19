@@ -137,17 +137,13 @@ void MySolver::ResolvePlayerToPlatform(MySolver* a_pPlatform)
 
 void MySolver::ResolvePlayerToWall(MySolver* a_pWall)
 {
-	if (m_v3Position.x > 0.0f)
-		m_v3Position.x -= 1.0f;
-	else
-		m_v3Position.x += 1.0f;
-
-	if (m_v3Position.z > 0.0f)
-		m_v3Position.z -= 1.0f;
-	else
-		m_v3Position.z += 1.0f;
-
-	m_v3Velocity = vector3(-m_v3Velocity.x, m_v3Velocity.y, -m_v3Velocity.z);
+	// Check if Player is Within Bounds Before Wall Collision Resolution
+	auto circleVector = vector2(m_v3Position.x, m_v3Position.z);
+	auto distanceFromCenter = pow(circleVector.x, 2) + pow(circleVector.y, 2);
+	if (distanceFromCenter >= 1600)
+	{
+		m_v3Velocity = -m_v3Velocity;
+	}
 }
 
 void MySolver::ResolvePlatformToSpikeBed(MySolver* a_pSpikeBed)

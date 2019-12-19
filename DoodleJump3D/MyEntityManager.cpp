@@ -188,7 +188,6 @@ void Simplex::MyEntityManager::Update(void)
             if (j > 10) 
 			{
                 m_mEntityArray[0]->ResolvePlayerToPlatform(m_mEntityArray[j]);
-                //std::cout << "plat" << std::endl;
             }
 
             // Player to SpikeBed Collision
@@ -197,16 +196,16 @@ void Simplex::MyEntityManager::Update(void)
                 m_isGameOver = true;
             }
 
+			// Player to Central Pillar
 			else if (j == 10)
 			{
-				std::cout << "Central Pillar" << std::endl;
+				m_mEntityArray[0]->SetVelocity(-m_mEntityArray[0]->GetVelocity());
 			}
 
             // Player to Wall Collision
             else if (j > 1 && j < 11) 
 			{
                 m_mEntityArray[0]->ResolvePlayerToWall(m_mEntityArray[j]);
-                //std::cout << "hitting_wall" << std::endl;
             }
         }
     }
