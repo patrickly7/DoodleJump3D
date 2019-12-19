@@ -8,7 +8,7 @@ Player::Player(String ID, vector3 centerPos, float outer, float inner)
     movementFactor = 3.0f;
     direction = Movement_Key::NONE;
     dir = centerPos - GetPosition();
-
+    UsePhysicsSolver(true);
     angleRotations = {
         { Movement_Key::RIGHT,          glm::radians(0.0f   + 180.0f) },
         { Movement_Key::TOP_RIGHT,      glm::radians(45.0f  + 180.0f) },

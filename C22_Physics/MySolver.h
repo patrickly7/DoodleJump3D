@@ -159,13 +159,6 @@ namespace Simplex
 		void ResolvePlayerToPlatform(MySolver* a_pPlatform);
 
 		/*
-		USAGE: Resolve the collision between the player and the spike bed
-		ARGUMENTS: MySolver* a_pOther -> other solver to resolve collision with
-		OUTPUT: ---
-		*/
-		void ResolvePlayerToSpikeBed(MySolver* a_pSpikeBed);
-
-		/*
 		USAGE: Resolve the collision between the player and a wall
 		ARGUMENTS: MySolver* a_pOther -> other solver to resolve collision with
 		OUTPUT: ---

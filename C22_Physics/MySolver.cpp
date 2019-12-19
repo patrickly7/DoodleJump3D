@@ -127,15 +127,12 @@ void MySolver::ResolvePlayerToPlatform(MySolver* a_pPlatform)
 		m_v3Position.y = a_pPlatform->m_v3Position.y;
 	}
 
+	// Only Check for Collision Going Down
+	// (Allow for Going Up Through Platforms)
 	if (m_v3Velocity.y <= 0)
 	{
 		m_onAir = false;
 	}
-}
-
-void MySolver::ResolvePlayerToSpikeBed(MySolver* a_pSpikeBed)
-{
-	// TODO - Game Over
 }
 
 void MySolver::ResolvePlayerToWall(MySolver* a_pWall)

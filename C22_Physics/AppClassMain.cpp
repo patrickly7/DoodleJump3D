@@ -509,10 +509,9 @@ void Application::RunFrame() {
             ProcessMouseScroll(appEvent);
             break;
         case sf::Event::KeyPressed:
-            if (appEvent.key.code == sf::Keyboard::Key::P)
-                state = GameState::PAUSE_MENU;
-            else if (appEvent.key.code == sf::Keyboard::Key::M)
-                state = GameState::END_MENU;
+			// Pause the Game
+			if (appEvent.key.code == sf::Keyboard::Key::P)
+				state = GameState::PAUSE_MENU;
             else
                 ProcessKeyPressed(appEvent);
             break;
