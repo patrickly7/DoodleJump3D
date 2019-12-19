@@ -79,7 +79,7 @@ void Application::InitVariables(void)
     m_pEntityMngr->SetModelMatrix(glm::translate(vector3(4.0f, 3.0f, -3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_1");
     m_pEntityMngr->UsePhysicsSolver();*/
 
-	//// TIMER-BASED PLATFORM SPAWNING
+	/*//// TIMER-BASED PLATFORM SPAWNING
 	//static uint nClock = m_pSystem->GenClock();
 	//static bool bStarted = false;
 	//for (int i = 0; i < 15; i++)
@@ -102,35 +102,51 @@ void Application::InitVariables(void)
 	//		bStarted = true;
 	//		m_pSystem->StartTimerOnClock(3.0, nClock);
 	//	}
-	//}
+	//}*/
 
 
-	// TIMER-BASED PLATFORM SPAWNING
-	int platformCount = 0;
-	static uint nClock = m_pSystem->GenClock();
-	static bool bStarted = false;
-	while (platforms.size() < 15)
+	/*//// TIMER-BASED PLATFORM SPAWNING
+	//int platformCount = 0;
+	//static uint nClock = m_pSystem->GenClock();
+	//static bool bStarted = false;
+	//while (platforms.size() < 15)
+	//{
+	//	if (m_pSystem->IsTimerDone(nClock) || !bStarted)
+	//	{
+	//		bStarted = true;
+	//		m_pSystem->StartTimerOnClock(0.5, nClock);
+
+	//		// Generate a platform	// PROBABLY BECAUSE OF THE TIMER MESSING WITH SEEDING, EVERY 5 SECS IT CREATES A PLATFORM IN THE EXACT SAME POSITION
+	//		platforms.push_back(
+	//			new Platform(
+	//				vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f,
+	//					cylinderHeight,
+	//					(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f),
+	//				"Platform_TEST_" + std::to_string(platformCount)));
+
+	//		m_pEntityMngr->AddEntity((MyEntity*)platforms[platformCount]);
+
+	//		// This is just to test if these are being created correctly, will remove later once spawing logic is completed
+	//		m_pEntityMngr->SetModelMatrix(glm::translate(platforms[platformCount]->startPosition) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_TEST_" + std::to_string(platformCount));
+
+	//		platformCount++; // this is gonna go onto infinity
+	//	}
+	//}*/
+
+	for (int i = 0; i < 30; i++) 
 	{
-		if (m_pSystem->IsTimerDone(nClock) || !bStarted)
-		{
-			bStarted = true;
-			m_pSystem->StartTimerOnClock(0.5, nClock);
+		// Generate a platform at a random position
+		platforms.push_back(
+			new Platform(
+				vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f, //random x value, modified to better fit radius of cylinder
+					(cylinderHeight / 30) * (30 - i),	//stagnates the platforms along the y-axis
+					(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f), //random z value, modified to better fit radius of cylinder
+				"Platform_TEST_" + std::to_string(i)));
 
-			// Generate a platform	// PROBABLY BECAUSE OF THE TIMER MESSING WITH SEEDING, EVERY 5 SECS IT CREATES A PLATFORM IN THE EXACT SAME POSITION
-			platforms.push_back(
-				new Platform(
-					vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f,
-						cylinderHeight,
-						(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f),
-					"Platform_TEST_" + std::to_string(platformCount)));
+		m_pEntityMngr->AddEntity((MyEntity*)platforms[i]);
 
-			m_pEntityMngr->AddEntity((MyEntity*)platforms[platformCount]);
-
-			// This is just to test if these are being created correctly, will remove later once spawing logic is completed
-			m_pEntityMngr->SetModelMatrix(glm::translate(platforms[platformCount]->startPosition) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_TEST_" + std::to_string(platformCount));
-
-			platformCount++; // this is gonna go onto infinity
-		}
+		// This is just to test if these are being created correctly, will remove later once spawing logic is completed
+		m_pEntityMngr->SetModelMatrix(glm::translate(platforms[i]->startPosition) * glm::scale(vector3(20.0f, 0.1f, 20.0f)), "Platform_TEST_" + std::to_string(i));
 	}
 
     cameraController = new CameraController(*currentPlayer, vector3(0.0f, 3.0f, 0.0f), cylinderHeight, cylinderRadius);
@@ -142,10 +158,30 @@ void Application::Update(void)
 	//Update the system so it knows how much time has passed since the last call
 	m_pSystem->Update();
 
-	/*// TIMER-BASED PLATFORM SPAWNING	// WILL ADD ANOTHER 15 PER FRAME, NOT WHAT WE WANT
-	//int platformCount = 0;
+	// TIMER-BASED PLATFORM SPAWNING
+	/*
+	// THIS DOESN'T WORK, ALSO LEADS TO MEMORY LEAK
+	int platformCount = 0;
 	//static uint nClock = m_pSystem->GenClock();
 	//static bool bStarted = false;
+	if (platforms.size() < 15 && ((int)m_timePlaying % 2 == 0)) //CAN'T MOD ON FLOATS
+	{
+		// Generate a platform	// PROBABLY BECAUSE OF THE TIMER MESSING WITH SEEDING, EVERY 5 SECS IT CREATES A PLATFORM IN THE EXACT SAME POSITION
+		platforms.push_back(
+			new Platform(
+				vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f,
+					cylinderHeight,
+					(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f),
+				"Platform_TEST_" + std::to_string(platformCount)));
+
+		m_pEntityMngr->AddEntity((MyEntity*)platforms[platformCount]);
+
+		// This is just to test if these are being created correctly, will remove later once spawing logic is completed
+		m_pEntityMngr->SetModelMatrix(glm::translate(platforms[platformCount]->startPosition) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_TEST_" + std::to_string(platformCount));
+
+		platformCount++; // this is gonna go onto infinity
+	}*/
+	/*
 	//while (platforms.size() < 15) 
 	//{
 	//	if (m_pSystem->IsTimerDone(nClock) || !bStarted)
@@ -168,8 +204,8 @@ void Application::Update(void)
 
 	//		platformCount++; // this is gonna go onto infinity
 	//	}
-	//}
-	*/
+	//}*/
+	
 
     // Platforms movement logic
     for (int i = 0; i < platforms.size(); i++)

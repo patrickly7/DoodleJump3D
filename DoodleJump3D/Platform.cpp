@@ -6,31 +6,19 @@ Platform::Platform(vector3 startPos, String ID)
 	//start position fed into constructor, x and z coords should be random floats
 	startPosition = startPos;
 	endPosition = vector3(startPosition.x, startPosition.y - 90.0f, startPosition.z);
-	//offScreenPosition = vector3(-20.0f, -20.0f, -20.0f);  // DEPRECATE
-	//active = true;  // DEPRECATE
 	
+	float startingY = startPosition.y;
 }
-
-//void Platform::Spawn()  // DEPRECATE
-//{
-//	//at start position	//resets x and z of startPosition vector with new random values every 5 seconds (whenever platforms hit bottom)
-//	//active = true;
-//
-//	//Move();
-//}
 
 void Platform::Despawn()
 {
 	//at end position or when hitting spikes
-	//active = false;
 
 	MyEntityManager::ReleaseInstance();
 }
 
 void Platform::Move(SystemSingleton* a_pSystem, MyEntityManager* a_pEntityMngr, int a_index)
 {
-	//behavior I want to emulate: startPosition (lerps to) endPosition (blips to) offScreenPosition (waits x seconds, blips to) startPosition  // DEPRECATE
-
 	// Get a timer
 	static float fTimer = 0;	//store the new timer
 	static uint uClock = a_pSystem->GenClock(); //generate a new clock for that timer
@@ -52,19 +40,18 @@ void Platform::Move(SystemSingleton* a_pSystem, MyEntityManager* a_pEntityMngr, 
 
 		////Despawn();
 
-		ResetStartPosition();	//WORKS BUT ONLY ON ONE PLATFORM FOR SOME REASON  // DEPRECATE
+		ResetStartPosition();
 	}
 
 	a_pEntityMngr->SetModelMatrix(glm::translate(v3CurrentPos) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_TEST_" + std::to_string(a_index));
-
 }
 
-void Platform::ResetStartPosition() // DEPRECATE
+void Platform::ResetStartPosition()
 {
 	startPosition = vector3(
 		(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f,
 		70.0f,
 		(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f);
 
-	endPosition = vector3(startPosition.x, startPosition.y - 10.0f, startPosition.z);
+	endPosition = vector3(startPosition.x, -20.0f, startPosition.z);
 }
