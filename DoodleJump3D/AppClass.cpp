@@ -3,6 +3,7 @@ using namespace Simplex;
 
 constexpr float cylinderHeight = 70.0f;
 constexpr float cylinderRadius = 40.0f;
+constexpr float cylinderInnerRadius = 3.0f;
 
 void Application::InitVariables(void)
 {
@@ -67,7 +68,7 @@ void Application::InitVariables(void)
 
 	// Add Central Pillar (Index 10)
 	m_pEntityMngr->AddEntity("Additional\\pillar.obj", "central_pillar");
-	m_pEntityMngr->SetModelMatrix(glm::scale(IDENTITY_M4, vector3(3.0f, 10.0f, 3.0f)), "central_pillar");
+	m_pEntityMngr->SetModelMatrix(glm::scale(IDENTITY_M4, vector3(cylinderInnerRadius, 10.0f, cylinderInnerRadius)), "central_pillar");
 	m_pEntityMngr->UsePhysicsSolver();
 
     // Platforms (Index 11+)
@@ -75,143 +76,34 @@ void Application::InitVariables(void)
     m_pEntityMngr->SetModelMatrix(glm::scale(glm::translate(IDENTITY_M4, vector3(0.0f, -20.0f, -15.0f)), vector3(50.0f, 0.1f, 50.0f)), "Platform_0");
     m_pEntityMngr->UsePhysicsSolver();
 
-    /*m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_1");
-    m_pEntityMngr->SetModelMatrix(glm::translate(vector3(4.0f, 3.0f, -3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_1");
-    m_pEntityMngr->UsePhysicsSolver();*/
-
-	/*//// TIMER-BASED PLATFORM SPAWNING
-	//static uint nClock = m_pSystem->GenClock();
-	//static bool bStarted = false;
-	//for (int i = 0; i < 15; i++)
+    platMan = new PlatformManager(vector3(0.0f), cylinderHeight, cylinderInnerRadius, cylinderRadius);
+	//for (int i = 0; i < 90; i++) 
 	//{
+	//	// Generate a platform at a random position
 	//	platforms.push_back(
 	//		new Platform(
-	//			vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f,
-	//				cylinderHeight,
-	//				(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f),
+	//			vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 30.0f - 15.0f, //random x value, modified to better fit radius of cylinder
+	//				(cylinderHeight * 2 / 90) * (90 - i),	//stagnates the platforms along the y-axis, extending beyond the height of the cylinder
+	//				(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 30.0f - 15.0f), //random z value, modified to better fit radius of cylinder
 	//			"Platform_TEST_" + std::to_string(i)));
 
 	//	m_pEntityMngr->AddEntity((MyEntity*)platforms[i]);
 
 	//	// This is just to test if these are being created correctly, will remove later once spawing logic is completed
-	//	m_pEntityMngr->SetModelMatrix(glm::translate(platforms[i]->startPosition) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_TEST_" + std::to_string(i));
-
-	//	//WAIT HALF A SECOND BEFORE DOING NEXT LOOP
-	//	if (m_pSystem->IsTimerDone(nClock) || !bStarted)
-	//	{
-	//		bStarted = true;
-	//		m_pSystem->StartTimerOnClock(3.0, nClock);
-	//	}
-	//}*/
-
-
-	/*//// TIMER-BASED PLATFORM SPAWNING
-	//int platformCount = 0;
-	//static uint nClock = m_pSystem->GenClock();
-	//static bool bStarted = false;
-	//while (platforms.size() < 15)
-	//{
-	//	if (m_pSystem->IsTimerDone(nClock) || !bStarted)
-	//	{
-	//		bStarted = true;
-	//		m_pSystem->StartTimerOnClock(0.5, nClock);
-
-	//		// Generate a platform	// PROBABLY BECAUSE OF THE TIMER MESSING WITH SEEDING, EVERY 5 SECS IT CREATES A PLATFORM IN THE EXACT SAME POSITION
-	//		platforms.push_back(
-	//			new Platform(
-	//				vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f,
-	//					cylinderHeight,
-	//					(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f),
-	//				"Platform_TEST_" + std::to_string(platformCount)));
-
-	//		m_pEntityMngr->AddEntity((MyEntity*)platforms[platformCount]);
-
-	//		// This is just to test if these are being created correctly, will remove later once spawing logic is completed
-	//		m_pEntityMngr->SetModelMatrix(glm::translate(platforms[platformCount]->startPosition) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_TEST_" + std::to_string(platformCount));
-
-	//		platformCount++; // this is gonna go onto infinity
-	//	}
-	//}*/
-
-	for (int i = 0; i < 90; i++) 
-	{
-		// Generate a platform at a random position
-		platforms.push_back(
-			new Platform(
-				vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 30.0f - 15.0f, //random x value, modified to better fit radius of cylinder
-					(cylinderHeight * 2 / 90) * (90 - i),	//stagnates the platforms along the y-axis, extending beyond the height of the cylinder
-					(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 30.0f - 15.0f), //random z value, modified to better fit radius of cylinder
-				"Platform_TEST_" + std::to_string(i)));
-
-		m_pEntityMngr->AddEntity((MyEntity*)platforms[i]);
-
-		// This is just to test if these are being created correctly, will remove later once spawing logic is completed
-		m_pEntityMngr->SetModelMatrix(glm::scale(glm::translate(IDENTITY_M4, platforms[i]->startPosition), (vector3(15.0f, 0.1f, 15.0f))), "Platform_TEST_" + std::to_string(i));
-	}
+	//	m_pEntityMngr->SetModelMatrix(glm::scale(glm::translate(IDENTITY_M4, platforms[i]->startPosition), (vector3(15.0f, 0.1f, 15.0f))), "Platform_TEST_" + std::to_string(i));
+	//}
 
     cameraController = new CameraController(*currentPlayer, vector3(0.0f, 3.0f, 0.0f), cylinderHeight, cylinderRadius);
 }
 
 void Application::Update(void)
 {
+    static uint clock = m_pSystem->GenClock();
+    float delta = m_pSystem->GetDeltaTime(clock);
+    platMan->Update(delta);
     cameraController->Update();
 	//Update the system so it knows how much time has passed since the last call
-	m_pSystem->Update();
-
-	// TIMER-BASED PLATFORM SPAWNING
-	/*
-	// THIS DOESN'T WORK, ALSO LEADS TO MEMORY LEAK
-	int platformCount = 0;
-	//static uint nClock = m_pSystem->GenClock();
-	//static bool bStarted = false;
-	if (platforms.size() < 15 && ((int)m_timePlaying % 2 == 0)) //CAN'T MOD ON FLOATS
-	{
-		// Generate a platform	// PROBABLY BECAUSE OF THE TIMER MESSING WITH SEEDING, EVERY 5 SECS IT CREATES A PLATFORM IN THE EXACT SAME POSITION
-		platforms.push_back(
-			new Platform(
-				vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f,
-					cylinderHeight,
-					(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f),
-				"Platform_TEST_" + std::to_string(platformCount)));
-
-		m_pEntityMngr->AddEntity((MyEntity*)platforms[platformCount]);
-
-		// This is just to test if these are being created correctly, will remove later once spawing logic is completed
-		m_pEntityMngr->SetModelMatrix(glm::translate(platforms[platformCount]->startPosition) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_TEST_" + std::to_string(platformCount));
-
-		platformCount++; // this is gonna go onto infinity
-	}*/
-	/*
-	//while (platforms.size() < 15) 
-	//{
-	//	if (m_pSystem->IsTimerDone(nClock) || !bStarted)
-	//	{
-	//		bStarted = true;
-	//		m_pSystem->StartTimerOnClock(0.5, nClock);
-
-	//		// Generate a platform	// PROBABLY BECAUSE OF THE TIMER MESSING WITH SEEDING, EVERY 5 SECS IT CREATES A PLATFORM IN THE EXACT SAME POSITION
-	//		platforms.push_back(
-	//			new Platform(
-	//				vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f,
-	//					cylinderHeight,
-	//					(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f),
-	//				"Platform_TEST_" + std::to_string(platformCount)));
-
-	//		m_pEntityMngr->AddEntity((MyEntity*)platforms[platformCount]);
-
-	//		// This is just to test if these are being created correctly, will remove later once spawing logic is completed
-	//		m_pEntityMngr->SetModelMatrix(glm::translate(platforms[platformCount]->startPosition) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_TEST_" + std::to_string(platformCount));
-
-	//		platformCount++; // this is gonna go onto infinity
-	//	}
-	//}*/
-	
-
-    // Platforms movement logic
-    for (int i = 0; i < platforms.size(); i++)
-    {
-        platforms[i]->Move(m_pSystem, m_pEntityMngr, i);
-    }
+    m_pSystem->Update();
 
 	//Is the ArcBall active?
 	ArcBall();
@@ -287,7 +179,7 @@ void Application::Release(void)
 {
 	//Release MyEntityManager
 	MyEntityManager::ReleaseInstance();
-
+    delete platMan;
 	//release GUI
 	ShutdownGUI();
 }

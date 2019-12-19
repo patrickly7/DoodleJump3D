@@ -9,13 +9,13 @@ Date: 2017/06
 
 #include "Definitions.h"
 
+#include "PlatformManager.h"
 #include "ControllerConfiguration.h"
 #include "imgui\ImGuiObject.h"
 #include "MyEntityManager.h"
 #include "MyMesh.h"
 #include "Player.h"
 #include "CameraController.h"
-#include "Platform.h"
 
 namespace Simplex
 {
@@ -30,6 +30,7 @@ private:
     int currentPlayerIndex;
 	std::vector<Platform*> platforms;
     CameraController* cameraController;
+    PlatformManager* platMan;
 
 	String m_sProgrammer = "Team Scribble Hop"; //programmer
 
