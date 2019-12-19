@@ -12,6 +12,7 @@ void Menus::Update() {
             event.mouseButton.button == sf::Mouse::Left)  MouseClicked(mousePos);
     }
     DrawButtons();
+    DrawTexts();
     window->display();
 }
 
@@ -34,4 +35,10 @@ void Menus::HighlightBoxes(const sf::Vector2i& mousePos) {
 
 void Menus::DrawButtons() {
     for (auto& sp : sprites) window->draw(sp);
+}
+
+void Menus::DrawTexts() {
+    for (auto& t : texts) {
+        window->draw(t);
+    }
 }

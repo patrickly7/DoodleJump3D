@@ -22,13 +22,13 @@ namespace Simplex
 	//Adding Application to the Simplex namespace
 class Application
 {
+private:
 	MyEntityManager* m_pEntityMngr = nullptr; //Entity Manager
 	vector3 m_v3Creeper; //position of the creeper
 	quaternion m_qCreeper; //orientation for the creeper
     Player* currentPlayer;
     int currentPlayerIndex;
 	std::vector<Platform*> platforms;
-private:
     CameraController* cameraController;
 
 	String m_sProgrammer = "Team Scribble Hop"; //programmer
@@ -67,9 +67,9 @@ private:
 	sf::Sound m_sound; //sound effect
 	sf::Music m_soundBGM; //background music
 
-	float m_timePlaying = 0; // Time Played for Score
 
 public:
+    float m_timePlaying = 0; // Time Played for Score
     GameState& state;
     sf::Window* GetWindow() { return m_pWindow; }
 

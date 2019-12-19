@@ -52,6 +52,10 @@ void ApplicationManager::Run(const std::string& name, int size,
             if (previous == GameState::GAME) {
                 menuWindow->create(sf::VideoMode(gameWindow->getSize().x, gameWindow->getSize().y), "DoodleJump3D");
                 gameWindow->setVisible(false);
+                if (state == GameState::END_MENU) {
+                    float sc = app->m_timePlaying;
+                    endMenu->SetScore(sc);
+                }
             }
         }
     }

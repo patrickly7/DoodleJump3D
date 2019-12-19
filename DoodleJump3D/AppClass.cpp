@@ -120,7 +120,6 @@ void Application::Display(void)
 		state = GameState::END_MENU;
 
 		m_pEntityMngr->SetIsGameOver(false);
-		m_timePlaying = 0;
 
 		auto initModelMatrix = glm::translate(IDENTITY_M4, vector3(10.0f, 0.0f, 0.0f));
 		m_pEntityMngr->SetModelMatrix(initModelMatrix, currentPlayerIndex);
