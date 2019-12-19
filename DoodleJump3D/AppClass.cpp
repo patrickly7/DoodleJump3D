@@ -3,6 +3,7 @@ using namespace Simplex;
 
 constexpr float cylinderHeight = 70.0f;
 constexpr float cylinderRadius = 40.0f;
+constexpr float cylinderInnerRadius = 3.0f;
 
 void Application::InitVariables(void)
 {
@@ -15,8 +16,9 @@ void Application::InitVariables(void)
 	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 13.0f), 1); //set the position of first light (0 is reserved for ambient light)
 	m_pEntityMngr = MyEntityManager::GetInstance();
   
+	// Player
     currentPlayer = new Player("Player00", vector3(0.0f, 0.0f, 0.0f), cylinderRadius, 7.0f);
-    currentPlayer->SetPosition(vector3(10.0f, 0.0f, 0.0f));
+    currentPlayer->SetPosition(vector3(10.0f, 35.0f, 0.0f));	// Starts player halfway in the cylinder's height
     m_pEntityMngr->AddEntity((MyEntity*)currentPlayer);
     currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00");
 
@@ -70,15 +72,11 @@ void Application::InitVariables(void)
 	m_pEntityMngr->UsePhysicsSolver();
 
     // Platforms (Index 11+)
-    m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_0");
-
-    m_pEntityMngr->SetModelMatrix(glm::scale(glm::translate(IDENTITY_M4, vector3(0.0f, -20.0f, -15.0f)),
-                                     vector3(50.0f, 0.1f, 50.0f)), "Platform_0");
+    m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_0");	//BIG BOTTOM PLATFORM, FOR TESTING
+    m_pEntityMngr->SetModelMatrix(glm::scale(glm::translate(IDENTITY_M4, vector3(0.0f, -20.0f, -15.0f)), vector3(50.0f, 0.1f, 50.0f)), "Platform_0");
     m_pEntityMngr->UsePhysicsSolver();
 
-    m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_1");
-    m_pEntityMngr->SetModelMatrix(glm::translate(vector3(4.0f, 3.0f, -3.0f)) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_1");
-    m_pEntityMngr->UsePhysicsSolver();
+    platMan = new PlatformManager(vector3(0.0f), cylinderHeight, cylinderInnerRadius, cylinderRadius);
 
     cameraController = new CameraController(*currentPlayer, vector3(0.0f, 3.0f, 0.0f), cylinderHeight, cylinderRadius);
 }
@@ -92,15 +90,12 @@ void Application::ResetStartingPosition(void)
 
 void Application::Update(void)
 {
+    static uint clock = m_pSystem->GenClock();
+    float delta = m_pSystem->GetDeltaTime(clock);
+    platMan->Update(delta);
     cameraController->Update();
 	//Update the system so it knows how much time has passed since the last call
-	m_pSystem->Update();
-
-    // Platforms movement logic
-    for (int i = 0; i < platforms.size(); i++)
-    {
-        platforms[i]->Move(m_pSystem, m_pEntityMngr, i);
-    }
+    m_pSystem->Update();
 
 	//Is the ArcBall active?
 	ArcBall();
@@ -175,7 +170,7 @@ void Application::Release(void)
 {
 	//Release MyEntityManager
 	MyEntityManager::ReleaseInstance();
-
+    delete platMan;
 	//release GUI
 	ShutdownGUI();
 }

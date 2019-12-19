@@ -29,10 +29,13 @@ class MyEntity
 	bool m_bUsePhysicsSolver = false; //Indicates if we will use a physics solver 
 
 protected:
+    bool toDelete;
     MySolver* m_pSolver = nullptr; //Physics MySolver
     Model* m_pModel = nullptr; //Model associated with this MyEntity
     MyRigidBody* m_pRigidBody = nullptr; //Rigid Body associated with this MyEntity
 public:
+    void SetToDelete(bool val);
+    bool GetToDelete() { return toDelete; }
     virtual void Jump();
     /*
 	Usage: Constructor that specifies the name attached to the MyEntity

@@ -1,26 +1,25 @@
 #ifndef _PLATFORM_H
 #define _PLATFORM_H
 
-#include "MyEntityManager.h"
 #include "MyEntity.h"
 #include "Definitions.h"
+#include "MyEntityManager.h"
+
 #include <cstdlib>
 #include <ctime>
 using namespace Simplex;
 
-class Platform : MyEntity 
-{
-	vector3 offScreenPosition;
-	bool active;
-public:
-	vector3 startPosition;
-	vector3 endPosition;
+static const float SPEED = 2.0f;
 
+class Platform : public MyEntity 
+{
+private:
+    MyEntityManager* entMan;
+public:
+    String ID;
 	Platform(vector3 startPos, String ID);
-	void Spawn();
 	void Despawn();
-	void Move(SystemSingleton* a_pSystem, MyEntityManager* a_pEntityMngr, int a_index);
-	void ResetStartPosition();
+	void Move(float delta);
 };
 
 #endif //_PLATFORM_H

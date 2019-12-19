@@ -146,12 +146,12 @@ void MySolver::ResolvePlayerToWall(MySolver* a_pWall)
 	}
 }
 
-void MySolver::ResolvePlatformToSpikeBed(MySolver* a_pSpikeBed)
+void MySolver::ResolvePlatformToSpikeBed(MySolver* platform)
 {
 	// TODO - What happens when a platform touches the spikes?
 	// Currently the "other" is the platform, "this" is spikebed
-	if (m_v3Position.y < a_pSpikeBed->m_v3Position.y)
+	if (platform->m_v3Position.y < m_v3Position.y)
 	{
-		m_v3Position.y = a_pSpikeBed->m_v3Position.y;
+        platform->SetPosition(vector3(300.0f, 0.0f, 0.0f));
 	}
 }
