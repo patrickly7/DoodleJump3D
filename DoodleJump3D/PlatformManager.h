@@ -18,6 +18,7 @@ class PlatformManager
     float platYDist;
     std::deque<Platform*> platforms;
     uint64_t platformIndex;
+    float timePassed;
 public:
     PlatformManager(const vector3& center, float height, float innerRadius, float outerRadius);
     void Update(float delta);

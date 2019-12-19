@@ -9,14 +9,13 @@
 #include <ctime>
 using namespace Simplex;
 
-static const float SPEED = 5.0f;
+static const float SPEED = 2.0f;
 
 class Platform : public MyEntity 
 {
 private:
     MyEntityManager* entMan;
 public:
-    vector3 position;
     String ID;
 	Platform(vector3 startPos, String ID);
 	void Despawn();

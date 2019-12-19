@@ -325,11 +325,11 @@ void Simplex::MyEntity::ResolvePlayerToWall(MyEntity* a_pWall)
 	}
 }
 
-void Simplex::MyEntity::ResolvePlatformToSpikeBed(MyEntity* a_pSpikeBed)
+void Simplex::MyEntity::ResolvePlatformToSpikeBed(MyEntity* platform)
 {
 	if (m_bUsePhysicsSolver)
 	{
-		m_pSolver->ResolvePlatformToSpikeBed(a_pSpikeBed->GetSolver());
+		m_pSolver->ResolvePlatformToSpikeBed(platform->GetSolver());
 	}
 }
 

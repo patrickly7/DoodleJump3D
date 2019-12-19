@@ -210,9 +210,9 @@ void Simplex::MyEntityManager::Update(void)
         }
     }
     // Spikebed and Platform Collision - SpikeBed = 1
-    for (uint j = 10; j < m_uEntityCount; j++) {
-        if (m_mEntityArray[1]->IsColliding(m_mEntityArray[j]))
-            m_mEntityArray[1]->ResolvePlatformToSpikeBed(m_mEntityArray[j]);
+    for (uint j = 11; j < m_uEntityCount; j++) {
+        printf("J = %d, Y = %f\n", j, m_mEntityArray[j]->GetSolver()->GetPosition().y);
+        m_mEntityArray[1]->ResolvePlatformToSpikeBed(m_mEntityArray[j]);
     }
     for (uint i = 0; i < m_uEntityCount; i++) m_mEntityArray[i]->Update();
 }
