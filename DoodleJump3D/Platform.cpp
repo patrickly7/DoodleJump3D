@@ -5,41 +5,31 @@ Platform::Platform(vector3 startPos, String ID)
 {
 	//start position fed into constructor, x and z coords should be random floats
 	startPosition = startPos;
-	endPosition = vector3(startPosition.x, startPosition.y - 10.0f, startPosition.z);
-	offScreenPosition = vector3(-20.0f, -20.0f, -20.0f);
-	active = true;
+	endPosition = vector3(startPosition.x, startPosition.y - 90.0f, startPosition.z);
+	//offScreenPosition = vector3(-20.0f, -20.0f, -20.0f);  // DEPRECATE
+	//active = true;  // DEPRECATE
 	
 }
-/*
-	//give each platform its own static timer. when timer hits 5 seconds, re-place them at the top at new random position.
-	//ctor or spawn method?
 
-	// would forego the need for an offscreen Pos.
-	// but LERP automatically puts them back at the top.
+//void Platform::Spawn()  // DEPRECATE
+//{
+//	//at start position	//resets x and z of startPosition vector with new random values every 5 seconds (whenever platforms hit bottom)
+//	//active = true;
+//
+//	//Move();
+//}
 
-	// SOLUTION: have timer reset startPos with new random vals every 5 seconds****
-
-	// see reset position below
-*/
-
-void Platform::Spawn() 
-{
-	//at start position	//resets x and z of startPosition vector with new random values every 5 seconds (whenever platforms hit bottom)
-	active = true;
-
-	//Move();
-}
-
-void Platform::Despawn() 
+void Platform::Despawn()
 {
 	//at end position or when hitting spikes
-	active = false;
+	//active = false;
 
+	MyEntityManager::ReleaseInstance();
 }
 
 void Platform::Move(SystemSingleton* a_pSystem, MyEntityManager* a_pEntityMngr, int a_index)
 {
-	//behavior I want to emulate: startPosition (lerps to) endPosition (blips to) offScreenPosition (waits x seconds, blips to) startPosition
+	//behavior I want to emulate: startPosition (lerps to) endPosition (blips to) offScreenPosition (waits x seconds, blips to) startPosition  // DEPRECATE
 
 	// Get a timer
 	static float fTimer = 0;	//store the new timer
@@ -62,20 +52,19 @@ void Platform::Move(SystemSingleton* a_pSystem, MyEntityManager* a_pEntityMngr, 
 
 		////Despawn();
 
-		ResetStartPosition();	//WORKS BUT ONLY ON ONE PLATFORM FOR SOME REASON
+		ResetStartPosition();	//WORKS BUT ONLY ON ONE PLATFORM FOR SOME REASON  // DEPRECATE
 	}
 
-	a_pEntityMngr->SetModelMatrix(glm::translate(v3CurrentPos) * glm::scale(vector3(3.0f, 0.1f, 3.0f)), "Platform_TEST_" + std::to_string(a_index));
+	a_pEntityMngr->SetModelMatrix(glm::translate(v3CurrentPos) * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_TEST_" + std::to_string(a_index));
 
 }
 
-void Platform::ResetStartPosition() 
+void Platform::ResetStartPosition() // DEPRECATE
 {
 	startPosition = vector3(
 		(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f,
-		5.0f,
+		70.0f,
 		(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f);
 
 	endPosition = vector3(startPosition.x, startPosition.y - 10.0f, startPosition.z);
-
 }
