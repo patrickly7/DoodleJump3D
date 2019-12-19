@@ -16,7 +16,7 @@ void Application::InitVariables(void)
 	m_pEntityMngr = MyEntityManager::GetInstance();
 
 
-    m_pEntityMngr = MyEntityManager::GetInstance();
+    //m_pEntityMngr = MyEntityManager::GetInstance();	//duplicate
   
     currentPlayer = new Player("Player00", vector3(0.0f, 0.0f, 0.0f), cylinderRadius, 7.0f);
     currentPlayer->SetPosition(vector3(10.0f, 0.0f, 0.0f));
