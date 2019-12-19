@@ -25,7 +25,7 @@ void Platform::Move(SystemSingleton* a_pSystem, MyEntityManager* a_pEntityMngr, 
 	fTimer += a_pSystem->GetDeltaTime(uClock); //get the delta time for that timer
 
 	// Calculate percentage to LERP by
-	float fTimeBtwnStops = 5.0f;
+	float fTimeBtwnStops = 15.0f;
 	float fLerpPercentage = MapValue(fTimer, 0.0f, fTimeBtwnStops, 0.0f, 1.0f);		/*	Converts the ratio of [current elapsed time(fTimer) : fTimeBtwnStops]
 																						into a percentage value, scaled between 0.0f and 1.0f. */
 	// Use LERP percentage to calculate the current position

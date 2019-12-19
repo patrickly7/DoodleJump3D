@@ -17,7 +17,7 @@ void Application::InitVariables(void)
   
 	// Player
     currentPlayer = new Player("Player00", vector3(0.0f, 0.0f, 0.0f), cylinderRadius, 7.0f);
-    currentPlayer->SetPosition(vector3(10.0f, 70.0f, 0.0f));	// CHANGE THIS Y BACK TO 0 BEFORE PUSHING
+    currentPlayer->SetPosition(vector3(10.0f, 35.0f, 0.0f));	// Starts player halfway in the cylinder's height
     m_pEntityMngr->AddEntity((MyEntity*)currentPlayer);
     currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00");
 
@@ -133,20 +133,20 @@ void Application::InitVariables(void)
 	//	}
 	//}*/
 
-	for (int i = 0; i < 30; i++) 
+	for (int i = 0; i < 90; i++) 
 	{
 		// Generate a platform at a random position
 		platforms.push_back(
 			new Platform(
-				vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f, //random x value, modified to better fit radius of cylinder
-					(cylinderHeight / 30) * (30 - i),	//stagnates the platforms along the y-axis
-					(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f), //random z value, modified to better fit radius of cylinder
+				vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 30.0f - 15.0f, //random x value, modified to better fit radius of cylinder
+					(cylinderHeight * 2 / 90) * (90 - i),	//stagnates the platforms along the y-axis, extending beyond the height of the cylinder
+					(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 30.0f - 15.0f), //random z value, modified to better fit radius of cylinder
 				"Platform_TEST_" + std::to_string(i)));
 
 		m_pEntityMngr->AddEntity((MyEntity*)platforms[i]);
 
 		// This is just to test if these are being created correctly, will remove later once spawing logic is completed
-		m_pEntityMngr->SetModelMatrix(glm::translate(platforms[i]->startPosition) * glm::scale(vector3(20.0f, 0.1f, 20.0f)), "Platform_TEST_" + std::to_string(i));
+		m_pEntityMngr->SetModelMatrix(glm::scale(glm::translate(IDENTITY_M4, platforms[i]->startPosition), (vector3(15.0f, 0.1f, 15.0f))), "Platform_TEST_" + std::to_string(i));
 	}
 
     cameraController = new CameraController(*currentPlayer, vector3(0.0f, 3.0f, 0.0f), cylinderHeight, cylinderRadius);
