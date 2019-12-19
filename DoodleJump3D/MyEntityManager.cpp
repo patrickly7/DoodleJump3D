@@ -1,5 +1,10 @@
 #include "MyEntityManager.h"
 using namespace Simplex;
+float cylinderHeight = 70.0f;
+float cylinderRadius = 40.0f;
+float cylinderInnerRadius = 3.0f;
+
+
 //  MyEntityManager
 Simplex::MyEntityManager* Simplex::MyEntityManager::m_pInstance = nullptr;
 void Simplex::MyEntityManager::Init(void)
@@ -179,39 +184,36 @@ void Simplex::MyEntityManager::Update(void)
 	// Check collisions
 
     // Player Collision - Player is Entity 0
-    for (uint j = 1; j < m_uEntityCount; j++)
+    MyEntity* player = m_mEntityArray[0];
+    MyEntity* deathbed = m_mEntityArray[1];
+    //deathbed
+    if (player->IsColliding(deathbed)) {
+        m_isGameOver = true;
+    }
+    //walls
+    for (uint j = 2; j < 10; j++) { 
+        if (glm::length(vector2(pow(player->GetPosition().x, 2), pow(player->GetPosition().z, 2)))
+            > cylinderRadius - 1.0f) {
+            player->ResolvePlayerToWall(m_mEntityArray[j]);
+        }
+    }
+    //Central Pillar
+    if (glm::length(vector2(pow(player->GetPosition().x, 2), pow(player->GetPosition().z, 2)))
+        < cylinderInnerRadius + 1.0f) {
+        player->ResolvePlayerToWall(m_mEntityArray[10]);
+    }
+    //Platforms
+    for (uint j = 10; j < m_uEntityCount; j++)
     {
+        MyEntity* platform = m_mEntityArray[j];
         // If objects are colliding resolve the collision
         if (m_mEntityArray[0]->IsColliding(m_mEntityArray[j]))
         {
-            // Player to Platform Collision
-            if (j > 10) 
-			{
-                m_mEntityArray[0]->ResolvePlayerToPlatform(m_mEntityArray[j]);
-            }
-
-            // Player to SpikeBed Collision
-            else if (j == 1) 
-			{
-                m_isGameOver = true;
-            }
-
-			// Player to Central Pillar
-			else if (j == 10)
-			{
-				m_mEntityArray[0]->SetVelocity(-m_mEntityArray[0]->GetVelocity());
-			}
-
-            // Player to Wall Collision
-            else if (j > 1 && j < 11) 
-			{
-                m_mEntityArray[0]->ResolvePlayerToWall(m_mEntityArray[j]);
-            }
+            m_mEntityArray[0]->ResolvePlayerToPlatform(m_mEntityArray[j]);
         }
     }
     // Spikebed and Platform Collision - SpikeBed = 1
-    for (uint j = 11; j < m_uEntityCount; j++) {
-        printf("J = %d, Y = %f\n", j, m_mEntityArray[j]->GetSolver()->GetPosition().y);
+    for (uint j = 11; j < 20; j++) { // only the most recent have the chance to be colliding
         m_mEntityArray[1]->ResolvePlatformToSpikeBed(m_mEntityArray[j]);
     }
     for (uint i = 0; i < m_uEntityCount; i++) m_mEntityArray[i]->Update();

@@ -42,7 +42,7 @@ void PlatformManager::Update(float delta) {
         timePassed -= 0.5f;
         float x, y, z;
         float angle = (rand()) % 360;
-        float len = (rand()) % (int)(OUTER_RADIUS - INNER_RADIUS);
+        float len = INNER_RADIUS + (rand()) % (int)(OUTER_RADIUS - INNER_RADIUS);
         x = sin(angle) * len;
         y = platYDist * HEIGHT/2.0f;
         z = cos(angle) * len;

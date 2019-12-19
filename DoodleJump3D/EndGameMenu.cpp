@@ -4,7 +4,8 @@ EndGameMenu::EndGameMenu(GameState& s, int width, int height, std::shared_ptr<sf
     window = rend;
 
     if (backToMainImage.loadFromFile("../Assets/MainMenuButton.png"))
-        printf("Error loading button textures\n");
+        
+        ("Error loading button textures\n");
 
     backToMainButton.setTexture(backToMainImage, true);
     backToMainButton.setColor(sf::Color::White);
