@@ -67,8 +67,8 @@ void Application::InitVariables(void)
     }
 
 	// Add Central Pillar (Index 10)
-	m_pEntityMngr->AddEntity("Additional\\pillar.obj", "central_pillar");
-	m_pEntityMngr->SetModelMatrix(glm::scale(IDENTITY_M4, vector3(cylinderInnerRadius, 10.0f, cylinderInnerRadius)), "central_pillar");
+	m_pEntityMngr->AddEntity("Additional\\try2.obj", "central_pillar");
+	m_pEntityMngr->SetModelMatrix(glm::scale(IDENTITY_M4, vector3(3.0f, 10.0f, 3.0f)), "central_pillar");
 	m_pEntityMngr->UsePhysicsSolver();
 
     // Platforms (Index 11+)
@@ -77,23 +77,15 @@ void Application::InitVariables(void)
     m_pEntityMngr->UsePhysicsSolver();
 
     platMan = new PlatformManager(vector3(0.0f), cylinderHeight, cylinderInnerRadius, cylinderRadius);
-	//for (int i = 0; i < 90; i++) 
-	//{
-	//	// Generate a platform at a random position
-	//	platforms.push_back(
-	//		new Platform(
-	//			vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 30.0f - 15.0f, //random x value, modified to better fit radius of cylinder
-	//				(cylinderHeight * 2 / 90) * (90 - i),	//stagnates the platforms along the y-axis, extending beyond the height of the cylinder
-	//				(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 30.0f - 15.0f), //random z value, modified to better fit radius of cylinder
-	//			"Platform_TEST_" + std::to_string(i)));
-
-	//	m_pEntityMngr->AddEntity((MyEntity*)platforms[i]);
-
-	//	// This is just to test if these are being created correctly, will remove later once spawing logic is completed
-	//	m_pEntityMngr->SetModelMatrix(glm::scale(glm::translate(IDENTITY_M4, platforms[i]->startPosition), (vector3(15.0f, 0.1f, 15.0f))), "Platform_TEST_" + std::to_string(i));
-	//}
 
     cameraController = new CameraController(*currentPlayer, vector3(0.0f, 3.0f, 0.0f), cylinderHeight, cylinderRadius);
+}
+
+void Application::ResetStartingPosition(void)
+{
+	auto initModelMatrix = glm::translate(IDENTITY_M4, vector3(10.0f, 0.0f, 0.0f));
+	m_pEntityMngr->SetModelMatrix(initModelMatrix, currentPlayerIndex);
+	currentPlayer->SetAngle(0);
 }
 
 void Application::Update(void)
@@ -120,15 +112,14 @@ void Application::Update(void)
 
 void Application::Display(void)
 {
+	std::cout << currentPlayer->GetAngle() << std::endl;
+
 	// Check if the Game has Ended (Player has hit Spikes)
 	if (m_pEntityMngr->GetIsGameOver())
 	{
 		state = GameState::END_MENU;
-
 		m_pEntityMngr->SetIsGameOver(false);
-
-		auto initModelMatrix = glm::translate(IDENTITY_M4, vector3(10.0f, 0.0f, 0.0f));
-		m_pEntityMngr->SetModelMatrix(initModelMatrix, currentPlayerIndex);
+		ResetStartingPosition();
 
         return;
 	}

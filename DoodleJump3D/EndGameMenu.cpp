@@ -29,12 +29,12 @@ void EndGameMenu::MouseClicked(const sf::Vector2i& mousePos) {
 }
 
 void EndGameMenu::SetScore(float sc) {
-    score.setString("SCORE: " + std::to_string((int)sc * 50));
+    score.setString("SCORE: " + std::to_string((int)(sc * 50)));
     texts = std::vector<sf::Text>();
     texts.push_back(score);
 }
 
 void EndGameMenu::SetHighScore(float score) {
-	highScore.setString("HIGH SCORE: " + std::to_string((int)score * 50));
-	texts.push_back(highScore);
+	highScore.setString("HIGH SCORE: " + std::to_string((int)(score * 50)));
+    texts.push_back(highScore);
 }

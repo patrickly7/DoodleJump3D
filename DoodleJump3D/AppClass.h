@@ -73,7 +73,7 @@ public:
     float m_timePlaying = 0; // Time Played for Score
     GameState& state;
     sf::Window* GetWindow() { return m_pWindow; }
-
+	void ResetStartingPosition();
 
 #pragma region Constructor / Run / Destructor
     void RunFrame();

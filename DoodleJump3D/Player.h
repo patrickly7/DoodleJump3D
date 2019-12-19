@@ -29,6 +29,7 @@ private:
     void rotateTo(Movement_Key k);
     void Update();
     void Jump();
+
 public:
 	/*
 	TODO
@@ -39,5 +40,8 @@ public:
 	TODO
 	*/
     void Move(Movement_Key k, float ellapsed);
+
+	float GetAngle() { return currentAngle; }
+	void SetAngle(float angle) { currentAngle = angle; }
 };
 #endif

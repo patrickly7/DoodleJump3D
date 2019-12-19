@@ -4,7 +4,7 @@ Menus::Menus(GameState& s) : state(s) {}
 
 void Menus::Update() {
     sf::Event event;
-    window->clear();
+    window->clear(sf::Color(0, 128, 128));
     while (window->pollEvent(event)) {
         sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
         if (event.type == sf::Event::MouseMoved) HighlightBoxes(mousePos);

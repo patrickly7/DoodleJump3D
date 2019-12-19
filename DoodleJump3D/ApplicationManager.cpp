@@ -41,6 +41,12 @@ void ApplicationManager::Run(const std::string& name, int size,
             if (state == GameState::GAME) {
                 if(previous == GameState::PAUSE_MENU)
                     gameWindow->setVisible(true);
+				else if (previous == GameState::MAIN_MENU)
+				{
+					app->m_timePlaying = 0;
+					app->ResetStartingPosition();
+					gameWindow->setVisible(true);
+				}
                 else { //starting new game
                     /*app.reset(new Application(state));
                     app->Init(name, size, fullscreen, borderless);
