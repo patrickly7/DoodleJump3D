@@ -324,12 +324,6 @@ public:
 	OUTPUT: Current Game Status
 	*/
 	bool GetIsGameOver(void);
-
-	/*
-	USAGE: Sets the current game state to see if the game should end
-	ARGUMENTS: a_isGameOver -> Current Game Status
-	*/
-	void SetIsGameOver(bool a_isGameOver);
 private:
 	/*
 	Usage: constructor
