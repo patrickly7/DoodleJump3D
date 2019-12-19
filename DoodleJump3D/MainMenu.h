@@ -8,6 +8,8 @@ public:
     MainMenu(GameState& s, int width, int height);
     std::shared_ptr<sf::RenderWindow> GetWindow() { return window; }
 private:
+	sf::Text gameTitle;
+	sf::Font font;
     sf::Sprite playButton;
     sf::Sprite exitButton;
     sf::Texture playImage;

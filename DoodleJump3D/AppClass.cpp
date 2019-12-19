@@ -14,9 +14,6 @@ void Application::InitVariables(void)
 
 	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 13.0f), 1); //set the position of first light (0 is reserved for ambient light)
 	m_pEntityMngr = MyEntityManager::GetInstance();
-
-
-    m_pEntityMngr = MyEntityManager::GetInstance();
   
     currentPlayer = new Player("Player00", vector3(0.0f, 0.0f, 0.0f), cylinderRadius, 7.0f);
     currentPlayer->SetPosition(vector3(10.0f, 0.0f, 0.0f));
@@ -86,6 +83,13 @@ void Application::InitVariables(void)
     cameraController = new CameraController(*currentPlayer, vector3(0.0f, 3.0f, 0.0f), cylinderHeight, cylinderRadius);
 }
 
+void Application::ResetStartingPosition(void)
+{
+	auto initModelMatrix = glm::translate(IDENTITY_M4, vector3(10.0f, 0.0f, 0.0f));
+	m_pEntityMngr->SetModelMatrix(initModelMatrix, currentPlayerIndex);
+	currentPlayer->SetAngle(0);
+}
+
 void Application::Update(void)
 {
     cameraController->Update();
@@ -113,15 +117,14 @@ void Application::Update(void)
 
 void Application::Display(void)
 {
+	std::cout << currentPlayer->GetAngle() << std::endl;
+
 	// Check if the Game has Ended (Player has hit Spikes)
 	if (m_pEntityMngr->GetIsGameOver())
 	{
 		state = GameState::END_MENU;
-
 		m_pEntityMngr->SetIsGameOver(false);
-
-		auto initModelMatrix = glm::translate(IDENTITY_M4, vector3(10.0f, 0.0f, 0.0f));
-		m_pEntityMngr->SetModelMatrix(initModelMatrix, currentPlayerIndex);
+		ResetStartingPosition();
 
         return;
 	}
