@@ -185,22 +185,28 @@ void Simplex::MyEntityManager::Update(void)
         if (m_mEntityArray[0]->IsColliding(m_mEntityArray[j]))
         {
             // Player to Platform Collision
-            if (j > 9) {
+            if (j > 10) 
+			{
                 m_mEntityArray[0]->ResolvePlayerToPlatform(m_mEntityArray[j]);
-                std::cout << "plat" << std::endl;
+                //std::cout << "plat" << std::endl;
             }
 
             // Player to SpikeBed Collision
-            else if (j == 1) {
-                // m_mEntityArray[i]->ResolvePlayerToSpikeBed(m_mEntityArray[j]);
-                std::cout << "hitting_spikes" << std::endl;
-                //m_isGameOver = true;
+            else if (j == 1) 
+			{
+                m_isGameOver = true;
             }
 
+			else if (j == 10)
+			{
+				std::cout << "Central Pillar" << std::endl;
+			}
+
             // Player to Wall Collision
-            else if (j > 1 && j < 10) {
+            else if (j > 1 && j < 11) 
+			{
                 m_mEntityArray[0]->ResolvePlayerToWall(m_mEntityArray[j]);
-                std::cout << "hitting_wall" << std::endl;
+                //std::cout << "hitting_wall" << std::endl;
             }
         }
     }
@@ -546,4 +552,9 @@ void Simplex::MyEntityManager::UsePhysicsSolver(bool a_bUse, uint a_uIndex)
 bool Simplex::MyEntityManager::GetIsGameOver(void)
 {
 	return m_isGameOver;
+}
+
+void Simplex::MyEntityManager::SetIsGameOver(bool a_isGameOver)
+{
+	m_isGameOver = a_isGameOver;
 }
