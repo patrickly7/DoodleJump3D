@@ -17,10 +17,9 @@ void Application::InitVariables(void)
 
 
     m_pEntityMngr = MyEntityManager::GetInstance();
-    //m_pEntityMngr->AddEntity("Minecraft\\Steve.obj", "Steve");
   
-    currentPlayer = new Player("Player00", vector3(0.0f, 0.0f, 0.0f));
-    currentPlayer->SetPosition(vector3(10.0f, 0.0f, 0.0f));
+    currentPlayer = new Player("Player00", vector3(0.0f, 0.0f, 10.0f));
+    currentPlayer->SetPosition(vector3(20.0f, 10.0f, 10.0f));
     m_pEntityMngr->AddEntity((MyEntity*)currentPlayer);
     currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00");
 
@@ -42,7 +41,7 @@ void Application::InitVariables(void)
 	auto spikeBedMatrix = glm::translate(IDENTITY_M4, vector3(-scaleByThis / 2, spikeHeight, -scaleByThis / 2));
 	spikeBedMatrix = glm::scale(spikeBedMatrix, vector3(scaleByThis, 2.0f, scaleByThis));
 	m_pEntityMngr->SetModelMatrix(spikeBedMatrix, "Spike_Bed");
-	m_pEntityMngr->UsePhysicsSolver();
+	//m_pEntityMngr->UsePhysicsSolver();
 
 	// Walls (Index 2 - 9)
 	auto wallWidth = cylinderRadius;
@@ -95,6 +94,13 @@ void Application::Update(void)
 	//Update the system so it knows how much time has passed since the last call
 	m_pSystem->Update();
 
+
+    // Platforms movement logic
+    for (int i = 0; i < platforms.size(); i++)
+    {
+        platforms[i]->Move(m_pSystem, m_pEntityMngr, i);
+    }
+
 	//Is the ArcBall active?
 	ArcBall();
 
@@ -114,16 +120,12 @@ void Application::Display(void)
 	if (m_pEntityMngr->GetIsGameOver())
 	{
 		state = GameState::END_MENU;
+        return;
 	}
 
 	// Clear the screen
 	ClearScreen();
 
-	// Platforms movement logic
-	for (int i = 0; i < platforms.size(); i++) 
-	{
-		platforms[i]->Move(m_pSystem, m_pEntityMngr, i);
-	}
 
 	// draw a skybox
 	m_pMeshMngr->AddSkyboxToRenderList();

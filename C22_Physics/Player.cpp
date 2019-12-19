@@ -8,7 +8,7 @@ Player::Player(String ID, vector3 centerPos)
     movementFactor = 3.0f;
     direction = Movement_Key::NONE;
     dir = centerPos - GetPosition();
-
+    UsePhysicsSolver(true);
     angleRotations = {
         { Movement_Key::RIGHT,          glm::radians(0.0f   + 180.0f) },
         { Movement_Key::TOP_RIGHT,      glm::radians(45.0f  + 180.0f) },
@@ -45,7 +45,6 @@ void Player::Jump()
 }
 
 void Player::rotateTo(Movement_Key k) {
-    printf("=========\ncylinder = %f\n", glm::degrees(cylinderRotation));
     float angleFrom = currentAngle;
     float angleTo = angleRotations[k] - cylinderRotation;
     float angle = angleTo - angleFrom;

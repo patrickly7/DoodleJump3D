@@ -177,40 +177,72 @@ void Simplex::MyEntityManager::Update(void)
 	}
 	
 	// Check collisions
-	for (uint i = 0; i < m_uEntityCount; i++)
-	{
-		for (uint j = i + 1; j < m_uEntityCount; j++)
-		{
-			// If objects are colliding resolve the collision
-			if (m_mEntityArray[i]->IsColliding(m_mEntityArray[j]))
-			{
-				// Player to Platform Collision
-				if (i == 0 && j > 9) {
-					m_mEntityArray[i]->ResolvePlayerToPlatform(m_mEntityArray[j]);
-					std::cout << "plat" << std::endl;
-				}
 
-				// Player to SpikeBed Collision
-				else if (i == 0 && j == 1)
-					// m_mEntityArray[i]->ResolvePlayerToSpikeBed(m_mEntityArray[j]);
-				{
-					std::cout << "hitting_spikes" << std::endl;
-					m_isGameOver = true;
-				}
+    // Player Collision - Player is Entity 0
+    for (uint j = 1; j < m_uEntityCount; j++)
+    {
+        // If objects are colliding resolve the collision
+        if (m_mEntityArray[0]->IsColliding(m_mEntityArray[j]))
+        {
+            // Player to Platform Collision
+            if (j > 9) {
+                m_mEntityArray[0]->ResolvePlayerToPlatform(m_mEntityArray[j]);
+                std::cout << "plat" << std::endl;
+            }
 
-				// Player to Wall Collision
-				else if (i == 0 && j > 1 && j < 10)
-					m_mEntityArray[i]->ResolvePlayerToWall(m_mEntityArray[j]);
+            // Player to SpikeBed Collision
+            else if (j == 1) {
+                // m_mEntityArray[i]->ResolvePlayerToSpikeBed(m_mEntityArray[j]);
+                std::cout << "hitting_spikes" << std::endl;
+                m_isGameOver = true;
+            }
 
-				// Spikebed and Platform Collision
-				else if (i == 1 && j > 1 && j < 10)
-					m_mEntityArray[i]->ResolvePlatformToSpikeBed(m_mEntityArray[j]);
-			}
-		}
+            // Player to Wall Collision
+            else if (j > 1 && j < 10) {
+                m_mEntityArray[0]->ResolvePlayerToWall(m_mEntityArray[j]);
+                std::cout << "hitting_wall" << std::endl;
+            }
+        }
+    }
+    // Spikebed and Platform Collision - SpikeBed = 1
+    for (uint j = 10; j < m_uEntityCount; j++) {
+        if (m_mEntityArray[1]->IsColliding(m_mEntityArray[j]))
+            m_mEntityArray[1]->ResolvePlatformToSpikeBed(m_mEntityArray[j]);
+    }
+	//for (uint i = 0; i < m_uEntityCount; i++)
+	//{
+	//	for (uint j = i + 1; j < m_uEntityCount; j++)
+	//	{
+	//		// If objects are colliding resolve the collision
+	//		if (m_mEntityArray[i]->IsColliding(m_mEntityArray[j]))
+	//		{
+	//			// Player to Platform Collision
+	//			if (i == 0 && j > 9) {
+	//				m_mEntityArray[i]->ResolvePlayerToPlatform(m_mEntityArray[j]);
+	//				std::cout << "plat" << std::endl;
+	//			}
 
-		// Update each entity
-		m_mEntityArray[i]->Update();
-	}
+	//			// Player to SpikeBed Collision
+	//			else if (i == 0 && j == 1)
+	//				// m_mEntityArray[i]->ResolvePlayerToSpikeBed(m_mEntityArray[j]);
+	//			{
+	//				std::cout << "hitting_spikes" << std::endl;
+	//				m_isGameOver = true;
+	//			}
+
+	//			// Player to Wall Collision
+	//			else if (i == 0 && j > 1 && j < 10)
+	//				m_mEntityArray[i]->ResolvePlayerToWall(m_mEntityArray[j]);
+
+	//			// Spikebed and Platform Collision
+	//			else if (i == 1 && j > 1 && j < 10)
+	//				m_mEntityArray[i]->ResolvePlatformToSpikeBed(m_mEntityArray[j]);
+	//		}
+	//	}
+
+	//	// Update each entity
+	//	m_mEntityArray[i]->Update();
+	//}
 }
 
 void Simplex::MyEntityManager::AddEntity(MyEntity* ent) {
