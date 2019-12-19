@@ -72,10 +72,6 @@ void Application::InitVariables(void)
 	m_pEntityMngr->UsePhysicsSolver();
 
     // Platforms (Index 11+)
-    m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_0");	//BIG BOTTOM PLATFORM, FOR TESTING
-    m_pEntityMngr->SetModelMatrix(glm::scale(glm::translate(IDENTITY_M4, vector3(0.0f, -20.0f, -15.0f)), vector3(50.0f, 0.1f, 50.0f)), "Platform_0");
-    m_pEntityMngr->UsePhysicsSolver();
-
     platMan = new PlatformManager(vector3(0.0f), cylinderHeight, cylinderInnerRadius, cylinderRadius);
 
     cameraController = new CameraController(*currentPlayer, vector3(0.0f, 3.0f, 0.0f), cylinderHeight, cylinderRadius);
@@ -112,8 +108,6 @@ void Application::Update(void)
 
 void Application::Display(void)
 {
-	std::cout << currentPlayer->GetAngle() << std::endl;
-
 	// Check if the Game has Ended (Player has hit Spikes)
 	if (m_pEntityMngr->GetIsGameOver())
 	{
