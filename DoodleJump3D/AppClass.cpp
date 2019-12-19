@@ -92,7 +92,6 @@ void Application::Update(void)
 	//Update the system so it knows how much time has passed since the last call
 	m_pSystem->Update();
 
-
     // Platforms movement logic
     for (int i = 0; i < platforms.size(); i++)
     {

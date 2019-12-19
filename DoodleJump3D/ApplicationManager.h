@@ -16,6 +16,7 @@ public:
         bool fullscreen, bool borderless);
 private:
     GameState state;
+	std::vector<float> scores;
 };
 #endif
 

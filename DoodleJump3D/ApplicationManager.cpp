@@ -55,6 +55,9 @@ void ApplicationManager::Run(const std::string& name, int size,
                 if (state == GameState::END_MENU) {
                     float sc = app->m_timePlaying;
                     endMenu->SetScore(sc);
+					scores.push_back(sc);
+					endMenu->SetHighScore(*max_element(std::begin(scores), std::end(scores)));
+					app->m_timePlaying = 0;
                 }
             }
         }
