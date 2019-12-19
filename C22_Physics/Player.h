@@ -12,6 +12,8 @@ using std::map;
 class Player : public MyEntity
 {
 private:
+    const float OUTER_RADIUS;
+    const float INNER_RADIUS;
     vector3 jumpForce;
 	vector3 inputForce;
 	vector3 otherForce;
@@ -31,7 +33,7 @@ public:
 	/*
 	TODO
 	*/
-    Player(String ID, vector3 centerPos);
+    Player(String ID, vector3 centerPos, float outer, float inner);
 
 	/*
 	TODO

@@ -6,7 +6,7 @@ constexpr float cylinderRadius = 40.0f;
 
 void Application::InitVariables(void)
 {
-	// Set the position and target of the camera
+    // Set the position and target of the camera
 	m_pCameraMngr->SetPositionTargetAndUpward(
 		vector3(0.0f, 5.0f, 25.0f), //Position
 		vector3(0.0f, 0.0f, 0.0f),	//Target
@@ -18,21 +18,17 @@ void Application::InitVariables(void)
 
     m_pEntityMngr = MyEntityManager::GetInstance();
   
-    currentPlayer = new Player("Player00", vector3(0.0f, 0.0f, 10.0f));
-    currentPlayer->SetPosition(vector3(20.0f, 10.0f, 10.0f));
+    currentPlayer = new Player("Player00", vector3(0.0f, 0.0f, 0.0f), cylinderRadius, 7.0f);
+    currentPlayer->SetPosition(vector3(10.0f, 0.0f, 0.0f));
     m_pEntityMngr->AddEntity((MyEntity*)currentPlayer);
     currentPlayerIndex = m_pEntityMngr->GetEntityIndex("Player00");
 
-	// Platform initialization
-	srand(static_cast <unsigned> (time(0)));	// Seed for creating random values for platform placement
-    for (int i = 0; i < 5; i++)
-    {
-        platforms.push_back(new Platform(
-            vector3((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f,
-                5.0f,
-                (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 15.0f - 7.5f),
-            "Platform_TEST_" + std::to_string(i)));
-    }
+    //add central pillar
+    m_pEntityMngr->AddEntity("Additional\\pillar.obj", "central_pillar");
+    m_pEntityMngr->SetModelMatrix(glm::scale(IDENTITY_M4, vector3(3.0f, 10.0f, 3.0f)), "central_pillar");
+    m_pEntityMngr->UsePhysicsSolver();
+
+
 	// Death Bed (Index 1)
 	auto spikeHeight = -cylinderHeight/2.0f;
 	auto scaleByThis = cylinderRadius*2.0f;
@@ -78,7 +74,9 @@ void Application::InitVariables(void)
 
     // Platforms (Index 10+)
     m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_0");
-    m_pEntityMngr->SetModelMatrix(IDENTITY_M4 * glm::scale(vector3(5.0f, 0.1f, 5.0f)), "Platform_0");
+
+    m_pEntityMngr->SetModelMatrix(glm::scale(glm::translate(IDENTITY_M4, vector3(0.0f, -20.0f, -15.0f)),
+                                     vector3(50.0f, 0.1f, 50.0f)), "Platform_0");
     m_pEntityMngr->UsePhysicsSolver();
 
     m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Platform_1");
