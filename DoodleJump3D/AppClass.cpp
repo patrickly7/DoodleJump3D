@@ -68,7 +68,7 @@ void Application::InitVariables(void)
     }
 
 	// Add Central Pillar (Index 10)
-	m_pEntityMngr->AddEntity("Additional\\try2.obj", "central_pillar");
+	m_pEntityMngr->AddEntity("Additional\\pillar.obj", "central_pillar");
 	m_pEntityMngr->SetModelMatrix(glm::scale(IDENTITY_M4, vector3(3.0f, 10.0f, 3.0f)), "central_pillar");
 	m_pEntityMngr->UsePhysicsSolver();
 
